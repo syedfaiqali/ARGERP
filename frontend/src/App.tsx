@@ -7,6 +7,9 @@ import { Layout } from './components/Layout'
 import api from './services/api'
 import { screens } from './screens'
 import { modules, moduleForGroup } from './modules'
+import Login from './pages/auth/LoginPage'
+import { HomePage } from './pages/HomePage'
+import { MenuCardGrid } from './components/MenuCard'
 import { WorkflowAwareScreen } from './workflow/WorkflowRecord'
 import { WorkflowInbox } from './workflow/WorkflowInbox'
 import { WorkflowManagement } from './workflow/WorkflowManagement'
@@ -20,22 +23,13 @@ class ScreenBoundary extends React.Component<{ children: React.ReactNode }, { er
   static getDerivedStateFromError() { return { error: true } }
   render() { return this.state.error ? <Alert severity="error" action={<Button onClick={() => window.location.reload()}>Reload</Button>}>This screen could not load. Reload to try again.</Alert> : this.props.children }
 }
-function Login() {
-  const dispatch = useAppDispatch(), navigate = useNavigate()
-  const authenticated = useAppSelector(state => state.auth.isAuthenticated)
-  const [username, setUsername] = useState(''), [password, setPassword] = useState(''), [error, setError] = useState(''), [busy, setBusy] = useState(false)
-  if (authenticated) return <Navigate to="/" replace/>
-  return <Box sx={{ minHeight: '100vh', display: 'grid', placeItems: 'center', bgcolor: 'var(--lms-primary-soft)', p: 3 }}><Paper component="form" onSubmit={async event => {
-    event.preventDefault(); setBusy(true); setError('')
-    try { const { data } = await api.post('/api/auth/login', { username, password }); dispatch(loginSuccess({ ...data, refreshToken: '' })); dispatch(setCampus(data.user.entityId)); localStorage.setItem('clientName', 'ARG ERP'); localStorage.setItem('clientId', String(data.user.clientId)); navigate('/', { replace: true }) }
-    catch (e: any) { setError(e.response?.data?.error || 'Unable to sign in. Check your credentials and connection.') }
-    finally { setBusy(false) }
-  }} sx={{ p: 4, width: '100%', maxWidth: 420, borderRadius: 3 }}><Typography variant="h4" fontWeight={800} color="primary.dark">ARG ERP</Typography><Typography color="text.secondary" sx={{ mt: 1, mb: 3 }}>Human Resources · Sign in</Typography>{error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}<TextField fullWidth required label="Username" autoComplete="username" value={username} onChange={e => setUsername(e.target.value)} sx={{ mb: 2 }}/><TextField fullWidth required label="Password" autoComplete="current-password" type="password" value={password} onChange={e => setPassword(e.target.value)} sx={{ mb: 3 }}/><Button fullWidth variant="contained" type="submit" disabled={busy}>{busy ? 'Signing in…' : 'Sign in'}</Button></Paper></Box>
-}
 function Home({ module }: { module?: string }) {
  const selected = modules.find(item => item.key === module)
- const visible = screens.filter(screen => !module || moduleForGroup(screen.group) === module)
- return <Layout><Typography variant="h5" fontWeight={800} sx={{ mb: 1 }}>{selected?.name || 'ARG ERP'}</Typography><Typography color="text.secondary" sx={{ mb: 3 }}>{selected?.description || 'Choose a module to open your workspace.'}</Typography>{!module ? <Grid container spacing={2}>{modules.map(item => <Grid item xs={12} md={4} key={item.key}><Paper component={Link} to={'/modules/'+item.key} sx={{ display:'block',p:3,minHeight:160,textDecoration:'none',color:'text.primary',border:'1px solid var(--lms-border)','&:hover':{bgcolor:'var(--lms-primary-soft)',borderColor:'primary.main'} }}><Typography variant="h5" fontWeight={800} color="primary.dark" sx={{mb:1}}>{item.name}</Typography><Typography color="text.secondary">{item.description}</Typography></Paper></Grid>)}</Grid> : [...new Set(visible.map(screen => screen.group))].map(group => <Box key={group} sx={{ mb: 3 }}><Typography variant="h6" sx={{ mb: 1 }}>{group}</Typography><Grid container spacing={1.5}>{visible.filter(screen => screen.group === group).map(screen => <Grid item xs={12} sm={6} lg={4} key={screen.path}><Paper component={Link} to={screen.path} sx={{ display:'block',p:2,textDecoration:'none',color:'text.primary',border:'1px solid var(--lms-border)','&:hover':{bgcolor:'var(--lms-primary-soft)',borderColor:'primary.main'} }}>{screen.label}</Paper></Grid>)}</Grid></Box>)}</Layout>
+ const visible = screens.filter(screen => moduleForGroup(screen.group) === module)
+ const navigate = useNavigate()
+ if (!module) return <HomePage/>
+ const cards = [...new Set(visible.map(screen => screen.group))].map(group => ({title:group,items:visible.filter(screen=>screen.group===group).map(screen=>screen.label),permissionsPreFiltered:true,onItemClick:(label:string)=>{const screen=visible.find(item=>item.label===label);if(screen)navigate(screen.path)}}))
+ return <Layout><Box><Paper elevation={0} sx={{py:.8,px:{xs:1.5,sm:3},minHeight:66,mb:2,background:'linear-gradient(105deg, color-mix(in srgb, var(--lms-primary) 10%, white) 0%, rgba(255, 255, 255, 0.98) 72%)',border:'1px solid color-mix(in srgb, var(--lms-primary) 22%, transparent)',borderRadius:'18px',boxShadow:'0 5px 18px rgba(31,65,49,.045)',display:'flex',alignItems:'center',justifyContent:'space-between',gap:1,flexWrap:'wrap'}}><Typography variant="body2" sx={{fontWeight:700}}><Link to="/">Home</Link> / {selected?.name}</Typography>{module==='hr'&&<Button component={Link} to="/hr/attrition" size="small" variant="outlined">HR Dashboard</Button>}</Paper><Box sx={{p:{xs:1,md:3}}}><MenuCardGrid cards={cards}/></Box></Box></Layout>
 }
 export default function App() {
   const authenticated = useAppSelector(state => state.auth.isAuthenticated)

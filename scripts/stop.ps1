@@ -18,4 +18,20 @@ foreach ($rootId in $roots) {
     }
     for ($index = $ids.Count - 1; $index -ge 0; $index--) { Stop-Process -Id $ids[$index] -Force -ErrorAction SilentlyContinue }
 }
+if ($state.dockerNetwork) {
+    $networkIds = @(docker network ls --filter "id=$($state.dockerNetwork)" --format '{{.ID}}')
+    if ($networkIds.Count -eq 1) {
+        $network = docker network inspect $networkIds[0] | ConvertFrom-Json
+        if ($network.Name -match '^default-aspire-network-[a-z0-9]+$') {
+            $attached = @($network.Containers.PSObject.Properties)
+            # Only detach ARG's own persistent brokers from this launch's recorded network.
+            $foreign = @($attached | Where-Object { $_.Value.Name -notin @('argerp-redis','argerp-rabbitmq') })
+            if ($foreign.Count -eq 0) {
+                foreach ($container in $attached) { docker network disconnect $network.Id $container.Name | Out-Null }
+                $updated = docker network inspect $network.Id | ConvertFrom-Json
+                if (@($updated.Containers.PSObject.Properties).Count -eq 0) { docker network rm $network.Id | Out-Null }
+            }
+        }
+    }
+}
 Write-Host 'ARG ERP processes stopped.'

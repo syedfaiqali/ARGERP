@@ -16,6 +16,7 @@ try{
  const resumed=await call('/api/auth/login','POST',{username,password});assert.equal(resumed.status,200);
  assert.equal((await call('/api/auth/change-password','POST',{currentPassword:password,newPassword:nextPassword},resumed.data.accessToken)).status,204);
  assert.equal((await call('/api/HumanResource/EmployeeProfile/v3','GET',undefined,resumed.data.accessToken)).status,401,'Password change must revoke sessions across services');
+ assert.equal((await call('/api/Workflow/v3/me','GET',undefined,resumed.data.accessToken)).status,401,'Password change must revoke workflow sessions too');
  assert.equal((await call('/api/auth/login','POST',{username,password})).status,401);
  assert.equal((await call('/api/auth/login','POST',{username,password:nextPassword})).status,200);
  console.log('PASS Auth: user creation/update, login, account blocking, password change and cross-service session revocation.');

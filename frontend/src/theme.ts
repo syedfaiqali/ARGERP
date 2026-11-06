@@ -199,6 +199,7 @@ export const getTheme = (direction: 'ltr' | 'rtl', language: string, themeName: 
                     },
                 },
             },
+            MuiTextField: { defaultProps: { InputLabelProps: { shrink: true } } },
             MuiOutlinedInput: {
                 styleOverrides: {
                     root: {

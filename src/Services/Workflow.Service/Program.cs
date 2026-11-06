@@ -33,6 +33,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     options.TokenValidationParameters = JwtValidationParametersFactory.Create(jwt);
     options.Events = new JwtBearerEvents
     {
+        OnTokenValidated = context => ARGERP.Runtime.RuntimeExtensions.ValidateSessionAsync(context, builder.Configuration),
         OnMessageReceived = context =>
         {
             if (context.Request.Path.StartsWithSegments("/api/Workflow/v3/hub")) context.Token = context.Request.Query["access_token"];

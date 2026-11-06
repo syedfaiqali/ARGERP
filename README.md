@@ -4,7 +4,7 @@ Working branch: `feature-dod`. The home page has three modules: **Human Resource
 
 ## Local start
 
-Requires .NET 9 runtime, a compatible .NET SDK, Node.js and SQL Server LocalDB (`MSSQLLocalDB`). Run from this folder:
+Requires .NET 9 runtime, a compatible .NET SDK, Node.js, Docker Desktop (running) and SQL Server LocalDB (`MSSQLLocalDB`). Run from this folder:
 
 ```powershell
 npm --prefix frontend ci
@@ -38,6 +38,10 @@ See [the integration notes](docs/zkt-integration.md). Credentials are stored onl
 | Workflow | 5184 |
 | Aspire AppHost dashboard | 18880 |
 
+AppHost starts dedicated `argerp-redis` and `argerp-rabbitmq` Docker containers, waits for them before starting dependent services, and injects their connection strings. Redis is used for workflow replay protection and the SignalR backplane. RabbitMQ is running and referenced by the service configuration; the standalone flows currently use SQL and HTTP and do not publish queue messages. RabbitMQ data uses the `argerp-rabbitmq-data` volume.
+
+SQL remains the existing standalone LocalDB database, exposed to the AppHost as the external `OrganizationDB` and `UserManagementDB` connection resources. Both keys currently point to `ARGERP_HR`. AppHost does not recreate or rename the SQL database. The requested remote SQL change was cancelled; active settings remain local.
+
 The AppHost dashboard is configured for anonymous local development access. These HTTP settings are for the local workstation.
 
 ## Validation commands
@@ -56,3 +60,7 @@ node tests/hr-flows.mjs
 ```
 
 The ZKT integration test creates a temporary, uniquely named local fixture database, checks history/idempotency/source isolation and removes its fixtures. It does not contact the real ZKT server. Screen rendering is a server-render check; interactive browser/visual verification is a separate check.
+
+The login presentation, logo, home portal and menu cards reuse the original project's Al Rahim Group assets and JSX. The navigation shell keeps its sidebar/header dimensions and styling while exposing the three standalone modules. Login branding is always Al Rahim Group, including localhost.
+
+For Visual Studio, select the `AppHost` launch profile and press F5. The checked-in profile supplies the dashboard and telemetry environment variables. Use one backend launcher at a time: before switching from the script to Visual Studio, run `powershell -File scripts/stop.ps1 -BackendOnly`, stop any old debugging session, then rebuild. The stop script detaches only ARG's own brokers from the recorded ARG launch network and removes that network once empty; broker data volumes remain intact.

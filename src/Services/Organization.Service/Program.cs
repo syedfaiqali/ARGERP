@@ -14,7 +14,7 @@ var connection = builder.Configuration.GetConnectionString("OrganizationDB");
 builder.Services.AddDbContext<OrganizationDbContext>(options => options.UseSqlServer(connection, sql => sql.TranslateParameterizedCollectionsToConstants()));
 builder.Services.AddDbContextFactory<OrganizationDbContext>(options => options.UseSqlServer(connection, sql => sql.TranslateParameterizedCollectionsToConstants()), lifetime: ServiceLifetime.Scoped);
 builder.Services.AddDbContext<AuthorizationScopeDbContext>(options => options.UseSqlServer(connection));
-builder.Services.AddDbContext<ArgAuthDbContext>(options => options.UseSqlServer(connection));
+builder.Services.AddDbContext<ArgAuthDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UserManagementDB")));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddScoped<ISchoolSetupV3Service, SchoolSetupV3Service>();
 builder.Services.AddSingleton<IInstitutionTerminologyService, InstitutionTerminologyService>();

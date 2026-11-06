@@ -20,21 +20,22 @@ public static class RuntimeExtensions
             ValidateIssuer = true, ValidateAudience = true, ValidateLifetime = true, ValidateIssuerSigningKey = true,
             ValidIssuer = "ARGERP", ValidAudience = "ARGERP", IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)), ClockSkew = TimeSpan.FromSeconds(30)
         };
-            options.Events = new JwtBearerEvents { OnTokenValidated = async context =>
-            {
-                if (!int.TryParse(context.Principal?.FindFirstValue(ClaimTypes.NameIdentifier), out var id)
-                    || !int.TryParse(context.Principal?.FindFirstValue("sessionVersion"), out var version))
-                { context.Fail("Invalid session."); return; }
-                await using var connection = new SqlConnection(builder.Configuration.GetConnectionString("OrganizationDB"));
-                await connection.OpenAsync(context.HttpContext.RequestAborted);
-                await using var command = new SqlCommand("SELECT COUNT(*) FROM dbo.ArgUsers WHERE Id=@id AND Blocked=0 AND ISNULL(SessionVersion,0)=@version", connection);
-                command.Parameters.AddWithValue("@id", id); command.Parameters.AddWithValue("@version", version);
-                if (Convert.ToInt32(await command.ExecuteScalarAsync(context.HttpContext.RequestAborted)) != 1) context.Fail("Session expired.");
-            } };
+            options.Events = new JwtBearerEvents { OnTokenValidated = context => ValidateSessionAsync(context, builder.Configuration) };
         });
         builder.Services.AddAuthorization(options => options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build());
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddProblemDetails();
+    }
+    public static async Task ValidateSessionAsync(TokenValidatedContext context, IConfiguration configuration)
+    {
+        if (!int.TryParse(context.Principal?.FindFirstValue(ClaimTypes.NameIdentifier), out var id)
+            || !int.TryParse(context.Principal?.FindFirstValue("sessionVersion"), out var version))
+        { context.Fail("Invalid session."); return; }
+        await using var connection = new SqlConnection(configuration.GetConnectionString("UserManagementDB") ?? configuration.GetConnectionString("OrganizationDB"));
+        await connection.OpenAsync(context.HttpContext.RequestAborted);
+        await using var command = new SqlCommand("SELECT COUNT(*) FROM dbo.ArgUsers WHERE Id=@id AND Blocked=0 AND ISNULL(SessionVersion,0)=@version", connection);
+        command.Parameters.AddWithValue("@id", id); command.Parameters.AddWithValue("@version", version);
+        if (Convert.ToInt32(await command.ExecuteScalarAsync(context.HttpContext.RequestAborted)) != 1) context.Fail("Session expired.");
     }
     public static void UseArgRuntime(this WebApplication app)
     {
