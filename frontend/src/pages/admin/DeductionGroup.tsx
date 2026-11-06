@@ -10,7 +10,7 @@ import { SchemaTable } from "@/components/SchemaTable";
 import { FormThemeWrapper } from "@/components/FormThemeWrapper";
 import { T, useTranslation } from "@/components/AdaptiveTranslationProvider";
 import { GetService } from "@/constants/globalItems";
-import { apiErrorMessage, pendingWorkflow, workflowMutation } from "@/workflow/api";
+import { apiErrorMessage, saveRecord } from '@/services/mutations';
 import { useAppDispatch, useCachedRows } from "@/hooks";
 import { deductionGroupSlice } from "@/store/humanResourceSlices";
 
@@ -347,10 +347,8 @@ const DeductionGroup: React.FC<{ onSubViewChange?: (subView: string | null) => v
     setApiLoading(true);
     try {
       const response = formData.id
-        ? await workflowMutation("put", `/api/HumanResource/DeductionGroup/v3/${formData.id}`, payload)
-        : await workflowMutation("post", "/api/HumanResource/DeductionGroup/v3", payload);
-      // Sent for approval: the record itself does not change yet, so the list is left as it is.
-      if (pendingWorkflow(response)) return true;
+        ? await saveRecord("put", `/api/HumanResource/DeductionGroup/v3/${formData.id}`, payload)
+        : await saveRecord("post", "/api/HumanResource/DeductionGroup/v3", payload);
       // The list row carries the server-shaped deductionGroup label, so refetch
       // rather than reconstruct the cached shape from the form payload.
       dispatch(deductionGroupSlice.fetchAll(true));
@@ -371,8 +369,7 @@ const DeductionGroup: React.FC<{ onSubViewChange?: (subView: string | null) => v
   const handleDelete = async (row: any) => {
     setApiLoading(true);
     try {
-      const response = await workflowMutation("delete", `/api/HumanResource/DeductionGroup/v3/${row.id}`);
-      if (pendingWorkflow(response)) return;
+      const response = await saveRecord("delete", `/api/HumanResource/DeductionGroup/v3/${row.id}`);
       dispatch(deductionGroupSlice.actions.removeRow(row.id));
     } catch (error: any) {
       setToasterMessages([toErrorMessage(error, translate("Failed to delete deduction group"))]);

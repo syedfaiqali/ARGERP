@@ -11,7 +11,6 @@ namespace HumanResource.Service.Controllers
     [Route("api/QualificationType/v3")]
     [Route("api/HumanResource/QualificationType/v3")]
     [Authorize]
-    [EDXS.Shared.Workflow.WorkflowAction("ERQualificationtype")]
     public sealed class QualificationTypeV3Controller : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -57,7 +56,6 @@ namespace HumanResource.Service.Controllers
             }
         }
 
-        // The id also travels in the route so an approval workflow can identify the record.
         [HttpPut]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int? id, [FromBody] UpdateQualificationTypeV3Request request)

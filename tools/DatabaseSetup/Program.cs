@@ -39,8 +39,7 @@ await using (var master = new SqlConnection(masterBuilder.ConnectionString))
 await using var hr = new HumanResourceDbContext(new DbContextOptionsBuilder<HumanResourceDbContext>().UseSqlServer(connectionString).Options);
 await using var organization = new OrganizationDbContext(new DbContextOptionsBuilder<OrganizationDbContext>().UseSqlServer(connectionString).Options);
 await using var auth = new ArgAuthDbContext(new DbContextOptionsBuilder<ArgAuthDbContext>().UseSqlServer(connectionString).Options);
-await using var workflow = new HumanResource.Service.Approvals.Data.WorkflowDbContext(new DbContextOptionsBuilder<HumanResource.Service.Approvals.Data.WorkflowDbContext>().UseSqlServer(connectionString).Options);
-var schemas = new[] { workflow.Database.GenerateCreateScript(), hr.Database.GenerateCreateScript(), organization.Database.GenerateCreateScript(), auth.Database.GenerateCreateScript() };
+var schemas = new[] { hr.Database.GenerateCreateScript(), organization.Database.GenerateCreateScript(), auth.Database.GenerateCreateScript() };
 await using var connection = new SqlConnection(connectionString);
 await connection.OpenAsync();
 var output = new StringBuilder("-- ARGERP HR standalone schema. Generated from the checked-in EF models.\n-- Run against ARGERP_HR only. Existing EDXS databases are never used.\n");

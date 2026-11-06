@@ -10,7 +10,6 @@ namespace HumanResource.Service.Controllers
     [ApiController]
     [Route("api/DeductionGroup/v3")]
     [Authorize]
-    [EDXS.Shared.Workflow.WorkflowAction("EPDeductiongrphdr")]
     public sealed class DeductionGroupV3Controller : ControllerBase
     {
         private readonly IMediator _mediator;

@@ -18,7 +18,7 @@ import { LmsCheckbox } from "@/components/LmsCheckbox";
 import { LmsOverlayLoader } from "@/components/LmsOverlayLoader";
 import { LmsToaster } from "@/components/LmsToaster";
 import { T, useTranslation } from "@/components/AdaptiveTranslationProvider";
-import { apiErrorMessage, pendingWorkflow, workflowMutation } from "@/workflow/api";
+import { apiErrorMessage, saveRecord } from '@/services/mutations';
 import { useAppDispatch, useCachedRows } from "@/hooks";
 import { deductionTypeSlice } from "@/store/humanResourceSlices";
 import { LookupDropdown } from "@/components/LookupDropdown";
@@ -135,10 +135,9 @@ const DeductionType: React.FC<{ onSubViewChange?: (subView: string | null) => vo
     setApiLoading(true);
     try {
       const response: any = currentFormData.id && currentFormData.id > 0
-        ? await workflowMutation("put", `/api/HumanResource/DeductionType/v3/${currentFormData.id}`, payload)
-        : await workflowMutation("post", "/api/HumanResource/DeductionType/v3", payload);
-      // Sent for approval: the record itself does not change yet, so the list is left as it is.
-      if (pendingWorkflow(response)) return true;
+        ? await saveRecord("put", `/api/HumanResource/DeductionType/v3/${currentFormData.id}`, payload)
+        : await saveRecord("post", "/api/HumanResource/DeductionType/v3", payload);
+
       const saved: any = response?.data;
       // Patch the cached row instead of reloading the list; the lookups payload
       // is reference data unaffected by this save.
@@ -169,8 +168,7 @@ const DeductionType: React.FC<{ onSubViewChange?: (subView: string | null) => vo
   const handleDelete = async (row: any) => {
     setApiLoading(true);
     try {
-      const response = await workflowMutation("delete", `/api/HumanResource/DeductionType/v3/${row.id}`);
-      if (pendingWorkflow(response)) return;
+      const response = await saveRecord("delete", `/api/HumanResource/DeductionType/v3/${row.id}`);
       dispatch(deductionTypeSlice.actions.removeRow(row.id));
       setToasterMessages([translate("Record deleted successfully")]);
       setToasterSeverity("error");

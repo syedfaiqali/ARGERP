@@ -1,6 +1,6 @@
 import { organizationTextErrors } from "@/utils/organizationValidation";
 import React, { useState, useEffect, useMemo} from "react";
-import { pendingWorkflow, workflowMutation } from '@/workflow/api';
+import { saveRecord } from '@/services/mutations';
 import { Grid, Box, Typography, Collapse, Button } from "@mui/material";
 import { ArrowBack as ArrowBackIcon, Save as SaveIcon } from "@mui/icons-material";
 import { Column } from "@/components/DashboardTable";
@@ -148,14 +148,12 @@ const Department: React.FC<DepartmentProps> = ({ onSubViewChange, resetKey }) =>
 
       let saved: any;
       if (formData.id && formData.id > 0) {
-        const response = await workflowMutation('put', `/api/organization/Department/v3/${formData.id}`, payload);
-        if (pendingWorkflow(response)) { setViewMode('list'); return; }
+        const response = await saveRecord('put', `/api/organization/Department/v3/${formData.id}`, payload);
         if (response?.status >= 400) throw { response };
         saved = response?.data?.data ?? response?.data;
         success(translate("Updated successfully"));
       } else {
-        const response = await workflowMutation('post', "/api/organization/Department/v3", payload);
-        if (pendingWorkflow(response)) { setViewMode('list'); return; }
+        const response = await saveRecord('post', "/api/organization/Department/v3", payload);
         if (response?.status >= 400) throw { response };
         saved = response?.data?.data ?? response?.data;
         success(translate("Saved successfully"));
@@ -187,7 +185,7 @@ const Department: React.FC<DepartmentProps> = ({ onSubViewChange, resetKey }) =>
     if (!row.id) return;
     try {
       setApiLoading(true);
-      if (pendingWorkflow(await workflowMutation('delete', `/api/organization/Department/v3/${row.id}`))) return;
+      await saveRecord('delete', `/api/organization/Department/v3/${row.id}`);
       success(translate("Deleted successfully"));
       dispatch(departmentSlice.actions.removeRow(Number(row.id)));
     } catch (error: any) {

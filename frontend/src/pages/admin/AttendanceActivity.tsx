@@ -18,7 +18,7 @@ import { T, useTranslation } from "@/components/AdaptiveTranslationProvider";
 import {
   CheckemptyString,
 } from "@/constants/globalItems";
-import { apiErrorMessage, pendingWorkflow, workflowMutation } from "@/workflow/api";
+import { apiErrorMessage, saveRecord } from '@/services/mutations';
 import { useAppDispatch, useCachedRows } from "@/hooks";
 import { attendanceActivitySlice } from "@/store/humanResourceSlices";
 import {
@@ -256,13 +256,9 @@ const AttendanceActivity: React.FC<AttendanceActivityProps> = ({
     setApiLoading(true);
     try {
       const response: any = formData.id
-        ? await workflowMutation("put", `/api/HumanResource/AttendanceActivity/v3/${formData.id}`, dataToSend)
-        : await workflowMutation("post", "/api/HumanResource/AttendanceActivity/v3", dataToSend);
-      // Sent for approval: the record itself does not change yet, so the list is left as it is.
-      if (pendingWorkflow(response)) {
-        setViewMode("list");
-        return;
-      }
+        ? await saveRecord("put", `/api/HumanResource/AttendanceActivity/v3/${formData.id}`, dataToSend)
+        : await saveRecord("post", "/api/HumanResource/AttendanceActivity/v3", dataToSend);
+
       const saved: any = response?.data;
       setErrorMessages([
         formData.id
@@ -296,8 +292,7 @@ const AttendanceActivity: React.FC<AttendanceActivityProps> = ({
   const handleDelete = async (row: any) => {
     setApiLoading(true);
     try {
-      const response = await workflowMutation("delete", `/api/HumanResource/AttendanceActivity/v3/${row.id}`);
-      if (pendingWorkflow(response)) return;
+      const response = await saveRecord("delete", `/api/HumanResource/AttendanceActivity/v3/${row.id}`);
       setErrorMessages([translate("Record deleted successfully")]);
       setToasterSeverity("error");
       setShowError(true);

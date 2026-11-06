@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom';
 import Select from "@/components/ClearableSelect";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Grid, Box, Typography, CircularProgress, IconButton, Button, Collapse, Tooltip, FormControl, FormControlLabel, Radio, RadioGroup, Menu, MenuItem } from "@mui/material";
@@ -62,6 +63,8 @@ const EmployeeProfile: React.FC<EmployeeProfileProps> = ({
   const [viewMode, setViewMode] = useState<"list" | "new" | "edit" | "view" | "report" | "additionalInfo">(
     "list",
   );
+  const [searchParams] = useSearchParams();
+  const searchEmployeeId = Number(searchParams.get('employeeId'));
   const [additionalInfoEmployeeId, setAdditionalInfoEmployeeId] = useState<string>();
   const [formData, setFormData] = useState<any>({
     id: null,
@@ -2045,6 +2048,22 @@ const EmployeeProfile: React.FC<EmployeeProfileProps> = ({
       console.error("Failed to fetch teaching specialization", error);
     }
   }, [normalizeNullableNumber]);
+
+  useEffect(() => {
+    if (!Number.isInteger(searchEmployeeId) || searchEmployeeId <= 0) return;
+    const abort = new AbortController();
+    api.get('/api/HumanResource/EmployeeProfile/v3/' + searchEmployeeId, { signal: abort.signal }).then(({ data }) => {
+      if (abort.signal.aborted) return;
+      void loadDepartments(data.entityId);
+      void loadSubCampuses(data.entityId);
+      void loadReportingToEmployees(data.entityId, data.id);
+      setFormData({ ...data, cnicNo: formatCnic(data.cnicNo || ''), cellNo: formatContactNo(data.cellNo || '') });
+      void loadTeachingSubjectTypeIds(data.id);
+      setIsSubmitted(false);
+      setViewMode('view');
+    }).catch(() => { if (!abort.signal.aborted) { setToasterMessages(['Unable to open the selected employee. Please try again.']); setToasterSeverity('error'); setShowToaster(true); } });
+    return () => abort.abort();
+  }, [searchEmployeeId]);
 
   useEffect(() => {
     if (vacancyPrefillHandledRef.current) return;

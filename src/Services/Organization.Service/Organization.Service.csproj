@@ -22,7 +22,6 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
-    <PackageReference Include="StackExchange.Redis" Version="2.8.16" />
     <PackageReference Include="Serilog" Version="4.0.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
   </ItemGroup>
@@ -38,7 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\EDXS.Shared.Common\EDXS.Shared.Common.csproj" />
-    <ProjectReference Include="..\..\Shared\EDXS.Shared.Workflow\EDXS.Shared.Workflow.csproj" />
   </ItemGroup>
 
 <ItemGroup><ProjectReference Include="../../Shared/ARGERP.Runtime/ARGERP.Runtime.csproj" /></ItemGroup></Project>

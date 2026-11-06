@@ -11,7 +11,7 @@ import { T, useTranslation } from "@/components/AdaptiveTranslationProvider";
 import {
   CheckemptyString,
 } from "@/constants/globalItems";
-import { apiErrorMessage, pendingWorkflow, workflowMutation } from "@/workflow/api";
+import { apiErrorMessage, saveRecord } from '@/services/mutations';
 import {
   ArrowBack as ArrowBackIcon,
   Save as SaveIcon,
@@ -108,10 +108,8 @@ const DeviceType: React.FC<DeviceTypeProps> = ({
     setApiLoading(true);
     try {
       const response: any = data.id
-        ? await workflowMutation("put", `/api/HumanResource/DeviceType/v3/${data.id}`, data)
-        : await workflowMutation("post", "/api/HumanResource/DeviceType/v3", data);
-      // Sent for approval: the record itself does not change yet, so the list is left as it is.
-      if (pendingWorkflow(response)) return true;
+        ? await saveRecord("put", `/api/HumanResource/DeviceType/v3/${data.id}`, data)
+        : await saveRecord("post", "/api/HumanResource/DeviceType/v3", data);
       const saved: any = response?.data;
       setErrorMessages([
         data.id
@@ -142,8 +140,7 @@ const DeviceType: React.FC<DeviceTypeProps> = ({
   const handleDelete = async (row: any) => {
     setApiLoading(true);
     try {
-      const response = await workflowMutation("delete", `/api/HumanResource/DeviceType/v3/${row.id}`);
-      if (pendingWorkflow(response)) return;
+      const response = await saveRecord("delete", `/api/HumanResource/DeviceType/v3/${row.id}`);
       setErrorMessages([translate("Record deleted successfully")]);
       setToasterSeverity("error");
       setShowError(true);

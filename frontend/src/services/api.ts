@@ -7,7 +7,8 @@ api.interceptors.request.use(config => {
   if (token && !isAuthSessionValid()) { clearAuthSession(); window.location.assign('/login'); throw new axios.Cancel('Session expired') }
   if (token) config.headers.Authorization = 'Bearer ' + token
   config.headers['X-Client-Id'] = localStorage.getItem('clientId') || '1'
-  const entity = localStorage.getItem('selectedEntityId') || '1'
+  const entity = config.headers['X-Entity-Id'] || localStorage.getItem('selectedEntityId')
+  if (!entity) return config
   config.headers['X-Entity-Id'] = entity
   config.headers['X-Campus-Id'] = entity
   return config

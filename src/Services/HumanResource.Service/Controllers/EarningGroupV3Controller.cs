@@ -10,7 +10,6 @@ namespace HumanResource.Service.Controllers
     [ApiController]
     [Route("api/EarningGroup/v3")]
     [Authorize]
-    [EDXS.Shared.Workflow.WorkflowAction("EPEarninggrphdr")]
     public sealed class EarningGroupV3Controller : ControllerBase
     {
         private readonly IMediator _mediator;

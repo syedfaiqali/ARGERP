@@ -1,4 +1,3 @@
-using HumanResource.Service.Approvals;
 using ARGERP.Runtime;
 using EDXS.Shared.Common;
 using HumanResource.Service.PayrollAccounting;
@@ -10,30 +9,6 @@ using HumanResource.Service.Services;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 builder.AddArgAuthentication();
-builder.Configuration["Workflow:ServiceName"] = "humanresource";
-EDXS.Shared.Workflow.WorkflowIntegration.AddWorkflowAdapter<HumanResource.Service.Workflow.QualificationWorkflowAdapter>(builder.Services);
-// Further adapters reuse the action filter and registration worker installed above; calling
-// AddWorkflowAdapter again would add the MVC action filter once more for every screen.
-
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.QualificationTypeWorkflowAdapter>();
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.SkillWorkflowAdapter>();
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.SkillTypeWorkflowAdapter>();
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.PositionTypeWorkflowAdapter>();
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.DocumentTypeWorkflowAdapter>();
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.EarningTypeWorkflowAdapter>();
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.EarningGroupWorkflowAdapter>();
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.DeductionTypeWorkflowAdapter>();
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.DeductionGroupWorkflowAdapter>();
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.PayrollPeriodWorkflowAdapter>();
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.HolidayTypeWorkflowAdapter>();
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.AttendanceActivityWorkflowAdapter>();
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.DeviceTypeWorkflowAdapter>();
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.DeviceRegistrationWorkflowAdapter>();
-builder.Services.AddScoped<EDXS.Shared.Workflow.IWorkflowActionAdapter, HumanResource.Service.Workflow.AttendancePolicyWorkflowAdapter>();
-// The adapter reads the submitting employee from the signed-in identity while the request is
-// prepared; the approved execution callback carries no user of its own.
-builder.Services.AddHttpContextAccessor();
-
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -53,12 +28,9 @@ builder.Services.AddScoped<IVacancyFulfillmentService, VacancyFulfillmentService
 builder.Services.AddScoped<Auth.Service.Services.HrAttritionDashboardService>();
 builder.Services.AddHttpClient("googleoauth", client => client.Timeout = TimeSpan.FromSeconds(30));
 builder.Services.AddScoped<GoogleOAuthService>();
-builder.AddHrApprovals();
+builder.Services.AddHttpClient<AssistantChatService>(client => client.Timeout = TimeSpan.FromSeconds(50));
 var app = builder.Build();
-EDXS.Shared.Workflow.WorkflowIntegration.UseWorkflowErrors(app);
 app.UseArgRuntime();
-EDXS.Shared.Workflow.WorkflowIntegration.MapWorkflowAdapter(app);
 app.UseScopeHeaderNormalization();
 if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
-app.MapHrApprovals();
 app.Run();

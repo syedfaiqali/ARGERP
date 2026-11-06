@@ -9,7 +9,6 @@ using Organization.Service.Queries;
 namespace Organization.Service.Controllers
 {
     [ApiController]
-    [EDXS.Shared.Workflow.WorkflowAction("Department")]
     [Route("api/Department/v3")]
     [Authorize]
     public sealed class DepartmentV3Controller : ControllerBase

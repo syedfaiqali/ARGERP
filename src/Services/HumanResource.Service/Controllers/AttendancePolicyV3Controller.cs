@@ -13,7 +13,6 @@ namespace HumanResource.Service.Controllers
     [ApiController]
     [Route("api/AttendancePolicy/v3")]
     [Authorize]
-    [EDXS.Shared.Workflow.WorkflowAction("ETPolicyhdr")]
     public sealed class AttendancePolicyV3Controller : ControllerBase
     {
         private readonly IMediator _mediator;

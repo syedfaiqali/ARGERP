@@ -18,8 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDXS.Shared.Infrastructure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDXS.Shared.Models", "src\Shared\EDXS.Shared.Models\EDXS.Shared.Models.csproj", "{76E89F8E-666D-4695-85A5-0E0BA7AFDC86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDXS.Shared.Workflow", "src\Shared\EDXS.Shared.Workflow\EDXS.Shared.Workflow.csproj", "{131D2277-FE56-4909-B931-8042F3614439}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseSetup", "tools\DatabaseSetup\DatabaseSetup.csproj", "{7A805390-1436-42BB-8BD0-D367C2C4C560}"
 EndProject
 Global
@@ -64,10 +62,6 @@ Global
 		{76E89F8E-666D-4695-85A5-0E0BA7AFDC86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76E89F8E-666D-4695-85A5-0E0BA7AFDC86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76E89F8E-666D-4695-85A5-0E0BA7AFDC86}.Release|Any CPU.Build.0 = Release|Any CPU
-		{131D2277-FE56-4909-B931-8042F3614439}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{131D2277-FE56-4909-B931-8042F3614439}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{131D2277-FE56-4909-B931-8042F3614439}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{131D2277-FE56-4909-B931-8042F3614439}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7A805390-1436-42BB-8BD0-D367C2C4C560}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7A805390-1436-42BB-8BD0-D367C2C4C560}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A805390-1436-42BB-8BD0-D367C2C4C560}.Release|Any CPU.ActiveCfg = Release|Any CPU

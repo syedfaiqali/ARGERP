@@ -5,8 +5,6 @@ using Organization.Service.Infrastructure.Data;
 using Organization.Service.Services;
 var builder = WebApplication.CreateBuilder(args);
 builder.AddArgAuthentication();
-builder.Configuration["Workflow:ServiceName"] = "organization";
-EDXS.Shared.Workflow.WorkflowIntegration.AddWorkflowAdapter<Organization.Service.Workflow.DepartmentWorkflowAdapter>(builder.Services);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -19,8 +17,6 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Progr
 builder.Services.AddScoped<ISchoolSetupV3Service, SchoolSetupV3Service>();
 builder.Services.AddSingleton<IInstitutionTerminologyService, InstitutionTerminologyService>();
 var app = builder.Build();
-EDXS.Shared.Workflow.WorkflowIntegration.UseWorkflowErrors(app);
 app.UseArgRuntime();
-EDXS.Shared.Workflow.WorkflowIntegration.MapWorkflowAdapter(app);
 if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
 app.Run();

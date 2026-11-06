@@ -11,7 +11,6 @@ namespace HumanResource.Service.Controllers
     [Authorize]
     [Route("api/HumanResource/DeviceRegistration/v3")]
     [Route("api/DeviceRegistration/v3")]
-    [EDXS.Shared.Workflow.WorkflowAction("SMMachineRegistration")]
     public sealed class DeviceRegistrationV3Controller : ControllerBase
     {
         private readonly IMediator _mediator;

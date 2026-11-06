@@ -8,11 +8,9 @@ import api from './services/api'
 import { screens } from './screens'
 import { modules, moduleForGroup } from './modules'
 import Login from './pages/auth/LoginPage'
+import CampusSelection from './pages/auth/CampusSelection'
 import { HomePage } from './pages/HomePage'
 import { MenuCardGrid } from './components/MenuCard'
-import { WorkflowAwareScreen } from './workflow/WorkflowRecord'
-import { WorkflowInbox } from './workflow/WorkflowInbox'
-import { WorkflowManagement } from './workflow/WorkflowManagement'
 
 import { screenLoaders } from './screenLoaders'
 const pages = Object.fromEntries(screens.map(screen => [screen.component, lazy(screenLoaders[screen.component] as () => Promise<{ default: React.ComponentType<any> }>)]))
@@ -33,6 +31,8 @@ function Home({ module }: { module?: string }) {
 }
 export default function App() {
   const authenticated = useAppSelector(state => state.auth.isAuthenticated)
+  const campusId = useAppSelector(state => state.auth.selectedCampusId)
   if (!authenticated) return <Routes><Route path="*" element={<Login/>}/></Routes>
-  return <Suspense fallback={<Box sx={{ p: 6, textAlign: 'center' }}><CircularProgress/></Box>}><Routes><Route path="/login" element={<Navigate to="/" replace/>}/><Route path="/" element={<Home/>}/><Route path="/hr" element={<Home module="hr"/>}/>{modules.map(item => <Route key={item.key} path={"/modules/"+item.key} element={<Home module={item.key}/>}/>)}<Route path="/RequestNotifications" element={<Layout><WorkflowInbox/></Layout>}/><Route path="/security/WorkflowManagement" element={<Layout><WorkflowManagement/></Layout>}/><Route path="/hr/attrition" element={<Layout><Dashboard/></Layout>}/><Route path="/hr/employee/additional-info/:id" element={<ScreenBoundary><AdditionalInfo/></ScreenBoundary>}/>{screens.map(screen => { const Page = pages[screen.component]; return <Route key={screen.path} path={screen.path} element={<Layout><ScreenBoundary key={screen.path}><WorkflowAwareScreen><Page/></WorkflowAwareScreen></ScreenBoundary></Layout>}/> })}<Route path="*" element={<Navigate to="/" replace/>}/></Routes></Suspense>
+  if (!campusId) return <Routes><Route path="/campus-selection" element={<CampusSelection/>}/><Route path="*" element={<Navigate to="/campus-selection" replace/>}/></Routes>
+  return <Suspense fallback={<Box sx={{ p: 6, textAlign: 'center' }}><CircularProgress/></Box>}><Routes><Route path="/login" element={<Navigate to="/" replace/>}/><Route path="/" element={<Home/>}/><Route path="/hr" element={<Home module="hr"/>}/>{modules.map(item => <Route key={item.key} path={"/modules/"+item.key} element={<Home module={item.key}/>}/>)}<Route path="/hr/attrition" element={<Layout><Dashboard/></Layout>}/><Route path="/hr/employee/additional-info/:id" element={<ScreenBoundary><AdditionalInfo/></ScreenBoundary>}/>{screens.map(screen => { const Page = pages[screen.component]; return <Route key={screen.path} path={screen.path} element={<Layout><ScreenBoundary key={screen.path}><Page/></ScreenBoundary></Layout>}/> })}<Route path="*" element={<Navigate to="/" replace/>}/></Routes></Suspense>
 }

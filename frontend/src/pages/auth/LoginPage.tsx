@@ -38,7 +38,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { loginSuccess, setCampus } from '@/store/authSlice';
+import { loginSuccess } from '@/store/authSlice';
 import api from '@/services/api';
 import argLogoImage from '@/assets/ARG.png';
 const schema = yup.object({ username:yup.string().required('Username is required'), password:yup.string().required('Password is required') });
@@ -255,7 +255,7 @@ export default function LoginPage() {
  const [showPassword,setShowPassword]=useState(false),[loading,setLoading]=useState(false),[error,setError]=useState(''),[help,setHelp]=useState(false),[sloganIndex,setSloganIndex]=useState(0);
  const { register,handleSubmit,formState:{errors} }=useForm<LoginFormData>({resolver:yupResolver(schema)});
  useEffect(()=>{const timer=window.setInterval(()=>setSloganIndex(index=>(index+1)%slogans.length),6000);return()=>window.clearInterval(timer)},[]);
- const onSubmit=async(credentials:LoginFormData)=>{setLoading(true);setError('');try{const {data}=await api.post('/api/auth/login',credentials);dispatch(loginSuccess({...data,refreshToken:''}));dispatch(setCampus(data.user.entityId));localStorage.setItem('clientName','Al Rahim Group');localStorage.setItem('clientId',String(data.user.clientId));navigate('/',{replace:true})}catch(e:any){setError(getLoginErrorMessage(e))}finally{setLoading(false)}};
+ const onSubmit=async(credentials:LoginFormData)=>{setLoading(true);setError('');try{const {data}=await api.post('/api/auth/login',credentials);dispatch(loginSuccess({...data,refreshToken:''}));localStorage.setItem('clientName','Al Rahim Group');localStorage.setItem('clientId',String(data.user.clientId));navigate('/campus-selection',{replace:true})}catch(e:any){setError(getLoginErrorMessage(e))}finally{setLoading(false)}};
  if(authenticated)return <Navigate to="/" replace/>;
 return (<Box sx={{
         minHeight: "100vh",

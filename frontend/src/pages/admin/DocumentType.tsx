@@ -13,7 +13,7 @@ import {
   CheckemptyString,
 } from "@/constants/globalItems";
 import { humanResourceAdministrationService } from "@/services/admin/administrationService";
-import { apiErrorMessage, pendingWorkflow } from "@/workflow/api";
+import { apiErrorMessage } from '@/services/mutations';
 import { useAppDispatch, useCachedRows } from "@/hooks";
 import { documentTypeSlice } from "@/store/humanResourceSlices";
 
@@ -96,8 +96,6 @@ const DocumentType: React.FC<DocumentTypeProps> = ({
       const response: any = data.id
         ? await humanResourceAdministrationService.updateDocumentType(data.id, payload)
         : await humanResourceAdministrationService.createDocumentType(payload);
-      // Sent for approval: the record itself does not change yet, so the list is left as it is.
-      if (pendingWorkflow(response)) return true;
       const saved: any = response?.data;
       setToasterMessages([
         data.id
@@ -131,7 +129,6 @@ const DocumentType: React.FC<DocumentTypeProps> = ({
     setApiLoading(true);
     try {
       const response = await humanResourceAdministrationService.deleteDocumentType(row.id);
-      if (pendingWorkflow(response)) return;
       setToasterMessages([translate("Record deleted successfully")]);
       setToasterSeverity("error");
       setShowToaster(true);

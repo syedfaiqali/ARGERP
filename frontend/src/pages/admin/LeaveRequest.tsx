@@ -40,7 +40,6 @@ import {
   toDateOnly,
 } from "@/constants/globalItems";
 import { LmsOverlayLoader } from "@/components/LmsOverlayLoader";
-import { refreshRequestNotifications } from "@/components/RequestNotificationPopover";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { LeaveRequestReportModal } from "./LeaveRequestReportModal";
 import { humanResourceAdministrationService } from "@/services/admin/administrationService";
@@ -829,7 +828,6 @@ const LeaveRequest: React.FC<LeaveRequestProps> = ({
         await PostService("/api/HumanResource/LeaveRequest/v3", payload);
         setErrorMessages([translate("Leave Request saved successfully")]);
       }
-      void refreshRequestNotifications();
       setToasterSeverity("success");
       setShowError(true);
       setViewMode("list");

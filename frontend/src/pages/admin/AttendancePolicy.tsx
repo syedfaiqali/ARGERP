@@ -36,7 +36,7 @@ import { attendancePolicySlice } from "@/store/humanResourceSlices";
 import {
   GetService,
 } from "@/constants/globalItems";
-import { apiErrorMessage, pendingWorkflow, workflowMutation } from "@/workflow/api";
+import { apiErrorMessage, saveRecord } from '@/services/mutations';
 
 const getLovId = (opt: any) => opt?.id ?? opt?.Id ?? opt?.lovid ?? opt?.lovId ?? opt?.value;
 const getLovCode = (opt: any) => opt?.code ?? opt?.Code ?? "";
@@ -309,10 +309,8 @@ const AttendancePolicy: React.FC<AttendancePolicyProps> = ({
       };
 
       const response = formData.id
-        ? await workflowMutation("put", `/api/HumanResource/AttendancePolicy/v3/${formData.id}`, payload)
-        : await workflowMutation("post", "/api/HumanResource/AttendancePolicy/v3", payload);
-      // Sent for approval: the record itself does not change yet, so the list is left as it is.
-      if (pendingWorkflow(response)) return true;
+        ? await saveRecord("put", `/api/HumanResource/AttendancePolicy/v3/${formData.id}`, payload)
+        : await saveRecord("post", "/api/HumanResource/AttendancePolicy/v3", payload);
 
       setToasterMessages([
         formData.id
@@ -339,8 +337,7 @@ const AttendancePolicy: React.FC<AttendancePolicyProps> = ({
   const handleDelete = async (row: any) => {
     setApiLoading(true);
     try {
-      const response = await workflowMutation("delete", `/api/HumanResource/AttendancePolicy/v3/${row.id}`);
-      if (pendingWorkflow(response)) return;
+      const response = await saveRecord("delete", `/api/HumanResource/AttendancePolicy/v3/${row.id}`);
       setToasterMessages([translate("Record deleted successfully")]);
       setToasterSeverity("error");
       setShowToaster(true);

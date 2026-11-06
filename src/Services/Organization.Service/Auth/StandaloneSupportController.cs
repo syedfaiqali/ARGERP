@@ -1,4 +1,5 @@
 using ARGERP.Auth;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,12 @@ namespace ARGERP.Support;
 public sealed class StandaloneSupportController(OrganizationDbContext db, ArgAuthDbContext auth) : ControllerBase
 {
     [HttpGet("api/auth/Legalentity/v3/Legalentity")]
-    public async Task<IActionResult> Entities(CancellationToken ct) => Ok(await db.OrgLegalentityLegacy.AsNoTracking().Where(x => x.clientid == 1 && !x.utblock).Select(x => new { id = x.Id, entityId = x.Id, name = x.stxt, stxt = x.stxt, instituteName = x.stxt, code = x.entityno }).ToListAsync(ct));
+    public async Task<IActionResult> Entities(CancellationToken ct)
+    {
+        if (!int.TryParse(User.FindFirstValue("clientId"), out var client)) return Forbid();
+        return Ok(await db.OrgLegalentityLegacy.AsNoTracking().Where(x => x.clientid == client && !x.utblock).OrderBy(x => x.stxt)
+            .Select(x => new { id = x.Id, entityId = x.Id, name = x.stxt, stxt = x.stxt, instituteName = x.stxt, code = x.entityno, x.address }).ToListAsync(ct));
+    }
     [HttpGet("api/arg/users")]
     public async Task<IActionResult> Users(CancellationToken ct) => Ok(await auth.Users.AsNoTracking().Select(x => new { x.Id, x.Username, x.FullName, x.EmployeeId, x.EntityId, x.Blocked }).ToListAsync(ct));
     public sealed record SaveUser(string Username, string FullName, string Password, int? EmployeeId, int EntityId = 1);

@@ -99,18 +99,12 @@ const authSlice = createSlice({
       localStorage.setItem('refreshToken', action.payload.refreshToken)
       localStorage.setItem('user', JSON.stringify(action.payload.user))
 
-      const entityId =
-        action.payload.user?.entityId ?? (action.payload.user as any)?.EntityId
-      if (entityId != null && entityId !== 0) {
-        const selectedEntityId = entityId.toString()
-        state.selectedCampusId = Number(entityId)
-        localStorage.setItem('selectedCampusId', selectedEntityId)
-        localStorage.setItem('selectedEntityId', selectedEntityId)
-        localStorage.setItem('selectedEntity', selectedEntityId)
-        localStorage.setItem('selectedEntityID', selectedEntityId)
-        localStorage.setItem('entityId', selectedEntityId)
-        localStorage.setItem('EntityId', selectedEntityId)
-      }
+      state.selectedCampusId = null
+      state.campuses = []
+      state.studentBirthdays = []
+      state.employeeBirthdays = []
+      sessionStorage.removeItem(CAMPUS_SESSION_KEY)
+      for (const key of ['selectedCampusId', 'selectedEntityId', 'selectedEntity', 'selectedEntityID', 'entityId', 'EntityId', 'campuses']) localStorage.removeItem(key)
     },
     loginFailure: (state, action: PayloadAction<string>) => {
       state.loading = false
@@ -122,6 +116,10 @@ const authSlice = createSlice({
       state.user = null
       state.accessToken = null
       state.refreshToken = null
+      state.selectedCampusId = null
+      state.campuses = []
+      state.studentBirthdays = []
+      state.employeeBirthdays = []
       clearAuthSession()
     },
     setUser: (state, action: PayloadAction<User>) => {

@@ -11,7 +11,6 @@ namespace HumanResource.Service.Controllers
     [ApiController]
     [Route("api/DeviceType/v3")]
     [Authorize]
-    [EDXS.Shared.Workflow.WorkflowAction("DeviceType")]
     public sealed class DeviceTypeV3Controller : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -75,7 +74,6 @@ namespace HumanResource.Service.Controllers
             }
         }
 
-        // The id also travels in the route so an approval workflow can identify the record.
         [HttpPut]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int? id, [FromBody] UpdateDeviceTypeV3Request request)

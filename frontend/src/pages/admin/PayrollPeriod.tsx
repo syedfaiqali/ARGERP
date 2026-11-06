@@ -30,7 +30,7 @@ import { FormThemeWrapper } from "@/components/FormThemeWrapper";
 import { FormDatePicker } from "@/components/FormDatePicker";
 import { T, useTranslation } from "@/components/AdaptiveTranslationProvider";
 import { GetService } from "@/constants/globalItems";
-import { apiErrorMessage, pendingWorkflow, workflowMutation } from "@/workflow/api";
+import { apiErrorMessage, saveRecord } from '@/services/mutations';
 import { useAppDispatch, useCachedRows, useHrLovs } from "@/hooks";
 import { payrollPeriodSlice, payrollRegisterSlice } from "@/store/humanResourceSlices";
 import { GenericSearchModal } from "@/components/GenericSearchModal";
@@ -284,11 +284,8 @@ const PayrollPeriod: React.FC<{ onSubViewChange?: (subView: string | null) => vo
       };
 
       const response: any = formData.id
-        ? await workflowMutation("put", `/api/HumanResource/PayrollPeriod/v3/${formData.id}`, payload)
-        : await workflowMutation("post", "/api/HumanResource/PayrollPeriod/v3", payload);
-
-      // Sent for approval: the record itself does not change yet, so the list is left as it is.
-      if (pendingWorkflow(response)) return true;
+        ? await saveRecord("put", `/api/HumanResource/PayrollPeriod/v3/${formData.id}`, payload)
+        : await saveRecord("post", "/api/HumanResource/PayrollPeriod/v3", payload);
       if (response && (response.status === 200 || response.status === 201 || response.status === 204)) {
         dispatch(payrollPeriodSlice.fetchAll(true));
         return true;
@@ -306,8 +303,7 @@ const PayrollPeriod: React.FC<{ onSubViewChange?: (subView: string | null) => vo
   const handleDelete = async (row: any) => {
     setIsFormLoading(true);
     try {
-      const response: any = await workflowMutation("delete", `/api/HumanResource/PayrollPeriod/v3/${row.id}`);
-      if (pendingWorkflow(response)) return;
+      const response: any = await saveRecord("delete", `/api/HumanResource/PayrollPeriod/v3/${row.id}`);
       if (response && (response.status === 204 || response.status === 200)) {
         dispatch(payrollPeriodSlice.fetchAll(true));
       }

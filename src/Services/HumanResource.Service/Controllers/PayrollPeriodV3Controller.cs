@@ -15,7 +15,6 @@ namespace HumanResource.Service.Controllers
     [Route("api/PayrollPeriod/v3")]
     [Route("api/HumanResource/PayrollPeriod/v3")]
     [Authorize]
-    [EDXS.Shared.Workflow.WorkflowAction("ETPayperioddtl")]
     public class PayrollPeriodV3Controller : ControllerBase
     {
         private readonly IMediator _mediator;

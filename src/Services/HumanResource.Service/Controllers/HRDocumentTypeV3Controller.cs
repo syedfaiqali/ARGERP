@@ -11,7 +11,6 @@ namespace HumanResource.Service.Controllers
     [Route("api/HRDocumentType/v3")]
     [Route("api/HumanResource/HRDocumentType/v3")]
     [Authorize]
-    [EDXS.Shared.Workflow.WorkflowAction("HRDocType")]
     public class HRDocumentTypeV3Controller : ControllerBase
     {
         private readonly IMediator _mediator;

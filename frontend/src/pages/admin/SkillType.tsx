@@ -19,7 +19,7 @@ import { LmsCheckbox } from "@/components/LmsCheckbox";
 import { LmsOverlayLoader } from "@/components/LmsOverlayLoader";
 import { T, useTranslation } from "@/components/AdaptiveTranslationProvider";
 import { CheckemptyString } from "@/constants/globalItems";
-import { apiErrorMessage, pendingWorkflow, workflowMutation } from "@/workflow/api";
+import { apiErrorMessage, saveRecord } from '@/services/mutations';
 import { useAppDispatch, useCachedRows } from "@/hooks";
 import { skillTypeSlice } from "@/store/humanResourceSlices";
 
@@ -110,10 +110,8 @@ const SkillType: React.FC<SkillTypeProps> = ({
     setApiLoading(true);
     try {
       const response: any = data.id
-        ? await workflowMutation("put", `/api/HumanResource/SkillType/v3/${data.id}`, data)
-        : await workflowMutation("post", "/api/HumanResource/SkillType/v3", data);
-      // Sent for approval: the record itself does not change yet, so the list is left as it is.
-      if (pendingWorkflow(response)) return true;
+        ? await saveRecord("put", `/api/HumanResource/SkillType/v3/${data.id}`, data)
+        : await saveRecord("post", "/api/HumanResource/SkillType/v3", data);
       const saved: any = response?.data;
       setToasterMessages([
         data.id
@@ -144,8 +142,7 @@ const SkillType: React.FC<SkillTypeProps> = ({
   const handleDelete = async (row: any) => {
     setApiLoading(true);
     try {
-      const response = await workflowMutation("delete", `/api/HumanResource/SkillType/v3/${row.id}`);
-      if (pendingWorkflow(response)) return;
+      const response = await saveRecord("delete", `/api/HumanResource/SkillType/v3/${row.id}`);
       setToasterMessages([translate("Record deleted successfully")]);
       setToasterSeverity("error");
       setShowToaster(true);

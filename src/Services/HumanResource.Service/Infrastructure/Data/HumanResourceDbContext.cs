@@ -32,9 +32,6 @@ namespace HumanResource.Service.Infrastructure.Data
         public DbSet<EPDeductiontypeLegacy> DeductionTypes => Set<EPDeductiontypeLegacy>();
         public DbSet<EPLoantypeLegacy> LoanTypes => Set<EPLoantypeLegacy>();
         public DbSet<EPLoanrequestLegacy> LoanRequests => Set<EPLoanrequestLegacy>();
-        public DbSet<LoanWorkflowApprovalInstance> LoanWorkflowApprovalInstances => Set<LoanWorkflowApprovalInstance>();
-        public DbSet<LoanWorkflowApprovalTask> LoanWorkflowApprovalTasks => Set<LoanWorkflowApprovalTask>();
-        public DbSet<LoanWorkflowApprovalEvent> LoanWorkflowApprovalEvents => Set<LoanWorkflowApprovalEvent>();
         public DbSet<EPDeductiongrphdrLegacy> DeductionGroups => Set<EPDeductiongrphdrLegacy>();
         public DbSet<EPDeductiongrpdtlLegacy> DeductionGroupDetails => Set<EPDeductiongrpdtlLegacy>();
         public DbSet<EPEarninggrphdrLegacy> EarningGroups => Set<EPEarninggrphdrLegacy>();
@@ -143,21 +140,6 @@ namespace HumanResource.Service.Infrastructure.Data
                 entity.ToTable("ARG_ZkImportReceipts");
                 entity.HasKey(x => new { x.SourceKey, x.TransactionId });
                 entity.Property(x => x.SourceKey).HasMaxLength(64);
-            });
-            modelBuilder.Entity<LoanWorkflowApprovalInstance>(entity =>
-            {
-                entity.ToView("WF_Instances");
-                entity.HasKey(x => x.Id);
-            });
-            modelBuilder.Entity<LoanWorkflowApprovalTask>(entity =>
-            {
-                entity.ToView("WF_Tasks");
-                entity.HasKey(x => x.Id);
-            });
-            modelBuilder.Entity<LoanWorkflowApprovalEvent>(entity =>
-            {
-                entity.ToView("WF_Events");
-                entity.HasKey(x => x.Id);
             });
 
             modelBuilder.Entity<HRVacancy>(entity =>

@@ -11,7 +11,6 @@ using HumanResource.Service.Entities;
 
 public partial class HumanResourceDbContext : DbContext
 {
-    internal int? WorkflowAuditUserId { get; set; }
     private readonly IHttpContextAccessor? _auditHttp;
     private readonly TimeProvider _auditClock;
     private readonly IConfiguration? _auditConfiguration;
@@ -104,7 +103,6 @@ public partial class HumanResourceDbContext : DbContext
         var actor = signed ? identity!.FindFirst("userName")?.Value ?? identity.FindFirst(ClaimTypes.Name)?.Value
             ?? identity.FindFirst("unique_name")?.Value ?? identity.FindFirst("userId")?.Value
             ?? identity.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? identity.FindFirst("sub")?.Value : null;
-        if (!signed && WorkflowAuditUserId is > 0) actor = WorkflowAuditUserId.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
         actor = string.IsNullOrWhiteSpace(actor) ? "system" : actor.Trim();
         var address = http?.Connection.RemoteIpAddress;
         if (address?.IsIPv4MappedToIPv6 == true) address = address.MapToIPv4();

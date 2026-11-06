@@ -7,7 +7,7 @@ import { SchemaTable } from "@/components/SchemaTable";
 import { FormThemeWrapper } from "@/components/FormThemeWrapper";
 import { LmsCheckbox } from "@/components/LmsCheckbox";
 import { T, useTranslation } from "@/components/AdaptiveTranslationProvider";
-import { apiErrorMessage, pendingWorkflow, workflowMutation } from "@/workflow/api";
+import { apiErrorMessage, saveRecord } from '@/services/mutations';
 import { useAppDispatch, useCachedRows, useHrLookups } from "@/hooks";
 import { earningTypeSlice } from "@/store/humanResourceSlices";
 import { LmsOverlayLoader } from "@/components/LmsOverlayLoader";
@@ -154,10 +154,8 @@ const EarningType: React.FC<Props> = ({ onSubViewChange, resetKey }) => {
     try {
       setApiLoading(true);
       const response: any = data.id
-        ? await workflowMutation("put", `/api/HumanResource/EarningType/v3/${data.id}`, payload)
-        : await workflowMutation("post", "/api/HumanResource/EarningType/v3", payload);
-      // Sent for approval: the record itself does not change yet, so the list is left as it is.
-      if (pendingWorkflow(response)) return true;
+        ? await saveRecord("put", `/api/HumanResource/EarningType/v3/${data.id}`, payload)
+        : await saveRecord("post", "/api/HumanResource/EarningType/v3", payload);
       const saved: any = response?.data;
       // Patch the cached row instead of reloading the list; the lookups payload
       // is reference data unaffected by this save.
@@ -184,8 +182,7 @@ const EarningType: React.FC<Props> = ({ onSubViewChange, resetKey }) => {
   const handleDelete = async (row: any) => {
     try {
       setApiLoading(true);
-      const response = await workflowMutation("delete", `/api/HumanResource/EarningType/v3/${row.id}`);
-      if (pendingWorkflow(response)) return;
+      const response = await saveRecord("delete", `/api/HumanResource/EarningType/v3/${row.id}`);
       dispatch(earningTypeSlice.actions.removeRow(row.id));
       setToasterMessages([translate("Record deleted successfully")]);
       setToasterSeverity("error");

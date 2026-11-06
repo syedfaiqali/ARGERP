@@ -33,7 +33,7 @@ import { T, useTranslation } from "@/components/AdaptiveTranslationProvider";
 import {
   CheckemptyString,
 } from "@/constants/globalItems";
-import { apiErrorMessage, pendingWorkflow, workflowMutation } from "@/workflow/api";
+import { apiErrorMessage, saveRecord } from '@/services/mutations';
 import { useAppDispatch, useCachedRows } from "@/hooks";
 import { deviceRegistrationSlice } from "@/store/humanResourceSlices";
 
@@ -324,13 +324,8 @@ const DeviceRegistration: React.FC<DeviceRegistrationProps> = ({
 
       const updating = Boolean(dataToSave.id && dataToSave.id > 0);
       const response = updating
-        ? await workflowMutation("put", `/api/HumanResource/DeviceRegistration/v3/${dataToSave.id}`, payload)
-        : await workflowMutation("post", "/api/HumanResource/DeviceRegistration/v3", payload);
-      // Sent for approval: the record itself does not change yet, so the list is left as it is.
-      if (pendingWorkflow(response)) {
-        setViewMode("list");
-        return true;
-      }
+        ? await saveRecord("put", `/api/HumanResource/DeviceRegistration/v3/${dataToSave.id}`, payload)
+        : await saveRecord("post", "/api/HumanResource/DeviceRegistration/v3", payload);
       setToasterMessages([
         updating ? translate("Record updated successfully") : translate("Record saved successfully"),
       ]);
@@ -355,8 +350,7 @@ const DeviceRegistration: React.FC<DeviceRegistrationProps> = ({
   const handleDelete = async (row: any) => {
     setApiLoading(true);
     try {
-      const response = await workflowMutation("delete", `/api/HumanResource/DeviceRegistration/v3/${row.id}`);
-      if (pendingWorkflow(response)) return;
+      const response = await saveRecord("delete", `/api/HumanResource/DeviceRegistration/v3/${row.id}`);
       setToasterMessages([translate("Record deleted successfully")]);
       setToasterSeverity("error");
       setShowToaster(true);
