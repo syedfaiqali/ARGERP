@@ -1,5 +1,5 @@
-using EDXS.Shared.Finance.Commands;
-using EDXS.Shared.Finance.Contracts;
+using HumanResource.Service.PayrollAccounting.Commands;
+using HumanResource.Service.PayrollAccounting.Contracts;
 using HumanResource.Service.Entities;
 using HumanResource.Service.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;

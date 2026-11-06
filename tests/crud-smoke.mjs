@@ -1,6 +1,6 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';
 const settings=JSON.parse(fs.readFileSync(new URL('../.local/settings.json',import.meta.url),'utf8').replace(/^\uFEFF/,''));
-const base='http://127.0.0.1:5181',login=await fetch(base+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'admin',password:settings.adminPassword})}).then(r=>r.json());
+const base=(process.env.ARG_API_BASE || 'http://127.0.0.1:5181'),login=await fetch(base+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'admin',password:settings.adminPassword})}).then(r=>r.json());
 const headers={Authorization:'Bearer '+login.accessToken,'Content-Type':'application/json','X-Client-Id':'1','X-Entity-Id':'1','X-Campus-Id':'1'};
 async function request(method,url,body){const response=await fetch(base+url,{method,headers:{...headers,'Idempotency-Key':randomUUID()},body:body?JSON.stringify(body):undefined});const text=await response.text();if(!response.ok)throw Error(method+' '+url+' returned '+response.status+' '+text);return text?JSON.parse(text):null;}
 const suffix=Date.now().toString().slice(-7),results=[];

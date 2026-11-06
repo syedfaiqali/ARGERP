@@ -10,8 +10,6 @@ public sealed class StandaloneSupportController(OrganizationDbContext db, ArgAut
 {
     [HttpGet("api/auth/Legalentity/v3/Legalentity")]
     public async Task<IActionResult> Entities(CancellationToken ct) => Ok(await db.OrgLegalentityLegacy.AsNoTracking().Where(x => x.clientid == 1 && !x.utblock).Select(x => new { id = x.Id, entityId = x.Id, name = x.stxt, stxt = x.stxt, instituteName = x.stxt, code = x.entityno }).ToListAsync(ct));
-    [HttpGet("api/Administration/SystemPolicyGeneral/v3/grid-paging")]
-    public IActionResult Paging() => Ok(new { gridPaging = 20, pageSize = 20, rowsPerPage = 20, pageSizeOptions = new[] { 10, 20, 50, 100 } });
     [HttpGet("api/arg/users")]
     public async Task<IActionResult> Users(CancellationToken ct) => Ok(await auth.Users.AsNoTracking().Select(x => new { x.Id, x.Username, x.FullName, x.EmployeeId, x.EntityId, x.Blocked }).ToListAsync(ct));
     public sealed record SaveUser(string Username, string FullName, string Password, int? EmployeeId, int EntityId = 1);

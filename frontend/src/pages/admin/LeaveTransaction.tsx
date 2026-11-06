@@ -78,8 +78,7 @@ const initialFormData = {
 const LONG_LEAVE_DAYS = 3;
 const REGULAR_APPROVAL_STATUS_ID = 582;
 const SPECIAL_APPROVAL_STATUS_ID = 1217;
-const MONTHLY_ATTENDANCE_PROCESS_API =
-  "https://sm.edu-man.com/sm/api/HRMonthlyAttendance/v2/MonthlyAttendanceProcess/3304/6583/null/null/null/null";
+
 
 const LeaveTransaction: React.FC<LeaveTransactionProps> = ({
   onSubViewChange,
@@ -1066,7 +1065,7 @@ const LeaveTransaction: React.FC<LeaveTransactionProps> = ({
 
   const runMonthlyAttendanceProcess = async () => {
     try {
-      await GetService(MONTHLY_ATTENDANCE_PROCESS_API);
+      await PostService('/api/HumanResource/EmployeeMonthlyAttendance/v3/recalculate', {employeeId: formData.employeeId, from: formData.fromDate, to: formData.tillDate || formData.fromDate});
       return true;
     } catch (error) {
       console.error("Monthly attendance process failed", error);

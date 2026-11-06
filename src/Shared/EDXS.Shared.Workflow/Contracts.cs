@@ -49,11 +49,6 @@ public static class PilotActions
         "/org/Department", ["OrgDepartment"]);
     public static readonly ActionRegistration VehicleType = new("Vehicletype", "Vehicle Type", "Transport", "transport", "VehicleType", false,
         "/transport/Vehicle Type", ["Vehicletype"]);
-    // The legacy Line Manager/HR/COO loan stages are skipped for requests this workflow governs:
-    // one screen carries one approval chain, the one configured in Workflow Management. Once it
-    // approves, the request goes straight to the Finance disbursement queue.
-    public static readonly ActionRegistration LoanRequest = new("EPLoanrequest", "Loan Request", "Human Resource", "humanresource", "LoanRequest", false,
-        "/hr/LoanRequest", ["EPLoanrequest"]);
     // Human Resource setup screens. Their records belong to a campus, so the requester's campus
     // travels with the request and the approved record lands in that campus's list.
     public static readonly ActionRegistration Qualification = new("ERQualification", "Qualification", "Human Resource", "humanresource", "Qualification", true,

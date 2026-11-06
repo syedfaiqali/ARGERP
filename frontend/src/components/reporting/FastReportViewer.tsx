@@ -3,21 +3,10 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Box, CircularProgress, Typography, Button, MenuItem } from "@mui/material";
 import DownloadIcon from '@mui/icons-material/Download';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import api from '@/services/api';
+import {hrReportBlob} from '@/services/hrReportService';
 import { T } from '@/components/AdaptiveTranslationProvider';
 
-const REPORT_EXPORT_FORMATS = [
-    { label: 'PDF', value: 'pdf' },
-    { label: 'XLS', value: 'xls' },
-    { label: 'XLSX', value: 'xlsx' },
-    { label: 'RTF', value: 'rtf' },
-    { label: 'DOCX', value: 'docx' },
-    { label: 'MHT', value: 'mht' },
-    { label: 'HTML', value: 'html' },
-    { label: 'Text', value: 'txt' },
-    { label: 'CSV', value: 'csv' },
-    { label: 'Image', value: 'png' },
-] as const;
+const REPORT_EXPORT_FORMATS = [{label:'PDF',value:'pdf'},{label:'XLSX',value:'xlsx'}] as const;
 
 const NO_DATA_TO_PRINT_MESSAGE = 'No Data To Print';
 
@@ -51,7 +40,7 @@ interface FastReportViewerProps {
 export const FastReportViewer: React.FC<FastReportViewerProps> = ({
     reportName,
     parameters = {},
-    baseUrl = '/api/report',
+    baseUrl = '/api/HumanResource/Reports/v3',
     includeReportNameInPath = true,
     requestKey,
 }) => {
@@ -121,15 +110,7 @@ export const FastReportViewer: React.FC<FastReportViewerProps> = ({
             let request = inFlightReportRequests.get(requestCacheKey);
 
             if (!request) {
-                request = api.get(requestUrl, {
-                    params: queryParams,
-                    responseType: 'blob'
-                }).then((response) => {
-                    if (!response?.data) {
-                        throw new Error('No data received from server');
-                    }
-                    return response.data as Blob;
-                });
+                request = hrReportBlob(reportName, queryParams);
                 inFlightReportRequests.set(requestCacheKey, request);
                 void request.then(
                     () => inFlightReportRequests.delete(requestCacheKey),
@@ -195,15 +176,7 @@ export const FastReportViewer: React.FC<FastReportViewerProps> = ({
             const reportPath = includeReportNameInPath
                 ? `/export/${encodeURIComponent(reportName)}`
                 : '/export';
-            const response = await api.get(`${trimmedBaseUrl}${reportPath}`, {
-                params: {
-                    ...buildQueryParams(),
-                    format: exportFormat,
-                },
-                responseType: 'blob'
-            });
-
-            const blob = response.data;
+            const blob = await hrReportBlob(reportName, buildQueryParams(), exportFormat);
             if (blob?.type?.includes('json') || blob?.type?.startsWith('text/')) {
                 const message = await readBlobMessage(blob);
                 throw new Error(isNoDataMessage(message) ? NO_DATA_TO_PRINT_MESSAGE : message || 'Server error during report export');

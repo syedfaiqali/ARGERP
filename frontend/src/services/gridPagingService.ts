@@ -15,7 +15,7 @@ export function loadGridPaging(force = false): Promise<number> {
   const revision = getGridPagingRevision(scope);
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 10000);
-  const url = '/api/Administration/SystemPolicyGeneral/v3/grid-paging' + (force ? `?gridPagingRefresh=${Date.now()}` : '');
+  const url = '/api/HumanResource/Settings/v3/grid-paging' + (force ? `?gridPagingRefresh=${Date.now()}` : '');
   const request = GetService(url, undefined, undefined, controller.signal)
     .then((response: any) => {
       const body = response?.data ?? response;

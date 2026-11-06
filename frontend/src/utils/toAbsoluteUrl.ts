@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 const API_BASE_URL: string =
-  import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || "http://localhost:5001";
+  import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || (typeof window === 'undefined' ? '' : window.location.origin);
 
 /**
  * Converts a possibly-relative URL (e.g. "/api/...") into an absolute URL using VITE_API_URL.
@@ -18,13 +18,6 @@ export function toAbsoluteUrl(input?: string | null): string {
 
   const base = (API_BASE_URL || "").trim().replace(/\/+$/, "");
   if (!base) return raw;
-
-  // LMS syllabus thumbnails and teaser media are served by Academics.Service. Route
-  // those paths through the Academics gateway prefix instead of the frontend dev server.
-  if (/^\/uploads\/lms-syllabus\//i.test(raw)) {
-    const academicsBase = /\/api\/Academics$/i.test(base) ? base : `${base}/api/Academics`;
-    return `${academicsBase}${raw}`;
-  }
 
   if (raw.startsWith("/")) return `${base}${raw}`;
   return `${base}/${raw}`;

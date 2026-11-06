@@ -5,7 +5,7 @@ import settingsReducer from './settingsSlice'
 import layoutReducer from './layoutSlice'
 import favoritesReducer from './favoritesSlice'
 import hrLookupsReducer from './hrLookupsSlice'
-import { countrySlice, regionSlice, stateSlice, citySlice, orgSiteSlice, buildingSlice, floorSlice, roomSlice, departmentSlice, designationSlice, occupationSlice, academicRegisterSlice, institutionSlice, policiesSlice, reasonTypeSlice, reasonSlice, messageTemplateSlice, unblockActivitiesSlice } from './organizationSlices'
+import { countrySlice, regionSlice, stateSlice, citySlice, orgSiteSlice, departmentSlice, designationSlice, occupationSlice, institutionSlice } from './organizationSlices'
 import {
   attendanceActivitySlice,
   attendancePolicySlice,
@@ -24,7 +24,6 @@ import {
   leaveAdjustmentPolicySlice,
   leaveGroupSlice,
   leaveTypeSlice,
-  loanTypeSlice,
   payrollPeriodSlice,
   payrollRegisterSlice,
   positionTypeSlice,
@@ -42,21 +41,11 @@ export const store = configureStore({reducer: { auth: authReducer, menuPermissio
     orgState: stateSlice.reducer,
     orgCity: citySlice.reducer,
     orgSite: orgSiteSlice.reducer,
-    orgBuilding: buildingSlice.reducer,
-    orgFloor: floorSlice.reducer,
-    orgRoom: roomSlice.reducer,
     orgDepartment: departmentSlice.reducer,
     orgDesignation: designationSlice.reducer,
     orgOccupation: occupationSlice.reducer,
-    orgAcademicRegister: academicRegisterSlice.reducer,
     orgInstitution: institutionSlice.reducer,
 
-    orgPolicies: policiesSlice.reducer,
-    orgReasonType: reasonTypeSlice.reducer,
-    orgReason: reasonSlice.reducer,
-    orgMessageTemplate: messageTemplateSlice.reducer,
-    orgUnblockActivities: unblockActivitiesSlice.reducer,
-    // Academics module caches (see store/academicsSlices.ts).
     // Human Resource module caches (see store/humanResourceSlices.ts).
     hrLookups: hrLookupsReducer,
     hrQualification: qualificationSlice.reducer,
@@ -84,7 +73,6 @@ export const store = configureStore({reducer: { auth: authReducer, menuPermissio
     hrEarningGroup: earningGroupSlice.reducer,
     hrDeductionType: deductionTypeSlice.reducer,
     hrDeductionGroup: deductionGroupSlice.reducer,
-    hrLoanType: loanTypeSlice.reducer,
     hrPayrollPeriod: payrollPeriodSlice.reducer,
     hrPayrollRegister: payrollRegisterSlice.reducer,
   },

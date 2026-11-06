@@ -49,7 +49,7 @@ export const loadPolicyDateFormat = async () => {
   if (cachedDateFormat !== null) return cachedDateFormat;
   if (dateFormatRequest) return dateFormatRequest;
 
-  dateFormatRequest = GetService("/api/Administration/SystemPolicyGeneral/v3")
+  dateFormatRequest = GetService("/api/HumanResource/Settings/v3")
     .then((response: any) => {
       const data = response?.data?.data ?? response?.data?.Data ?? response?.data ?? response ?? {};
       const value = normalizePolicyDateFormat(

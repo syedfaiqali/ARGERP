@@ -29,7 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\EDXS.Shared.Common\EDXS.Shared.Common.csproj" />
     <ProjectReference Include="..\..\Shared\EDXS.Shared.Workflow\EDXS.Shared.Workflow.csproj" />
-    <ProjectReference Include="..\..\Shared\EDXS.Shared.Finance\EDXS.Shared.Finance.csproj" />
+
   </ItemGroup>
 
-<ItemGroup><ProjectReference Include="../../Shared/ARGERP.Runtime/ARGERP.Runtime.csproj" /></ItemGroup></Project>
+<ItemGroup><ProjectReference Include="../../Shared/ARGERP.Runtime/ARGERP.Runtime.csproj" /></ItemGroup><ItemGroup><PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="9.0.0" /><ProjectReference Include="../../Shared/EDXS.Shared.Infrastructure/EDXS.Shared.Infrastructure.csproj" /></ItemGroup></Project>

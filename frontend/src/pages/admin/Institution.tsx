@@ -1342,7 +1342,7 @@ const Institution: React.FC<InstitutionProps> = ({ onSubViewChange, resetKey }) 
     }
   };
 
-  const toImagePreview = (imageId?: number | null) => imageId ? `/api/Student/v3/image/${imageId}` : "";
+  const toImagePreview = (imageId?: number | null) => imageId ? `/api/HumanResource/v3/image/${imageId}` : "";
   const toFormRow = (row: any): FormRow => ({
     ...row,
     sNo: undefined,

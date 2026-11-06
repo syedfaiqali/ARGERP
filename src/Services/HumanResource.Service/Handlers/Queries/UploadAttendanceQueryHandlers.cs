@@ -38,7 +38,7 @@ namespace HumanResource.Service.Handlers.Queries
             var deviceTypes = await GetLovByType("mtype");
             var fileTypes = await GetLovByType("FTYPE");
 
-            return new UploadAttendanceLookupsV3Dto(memberTypes, deviceTypes, fileTypes);
+            return new UploadAttendanceLookupsV3Dto(memberTypes.Where(x => x.Id != 190).ToList(), deviceTypes, fileTypes);
         }
 
         public async Task<IReadOnlyList<UploadAttendanceEmployeeV3Dto>> Handle(GetUploadAttendanceEmployeesV3Query request, CancellationToken cancellationToken)

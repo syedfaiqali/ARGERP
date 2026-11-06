@@ -19,10 +19,7 @@ var hr = builder.AddProject("hr", Path.Combine(source, "Services/HumanResource.S
 var organization = builder.AddProject("organization", Path.Combine(source, "Services/Organization.Service/Organization.Service.csproj"), launchProfileName:null)
     .WithHttpEndpoint(port:5183,targetPort:5183,isProxied:false).WithEnvironment("ASPNETCORE_URLS","http://127.0.0.1:5183")
     .WithReference(hrDatabase).WithReference(authDatabase).WithReference(redis).WithReference(rabbitMq).WaitFor(redis).WaitFor(rabbitMq);
-var workflow = builder.AddProject("workflow", Path.Combine(source, "Services/Workflow.Service/Workflow.Service.csproj"), launchProfileName:null)
-    .WithHttpEndpoint(port:5184,targetPort:5184,isProxied:false).WithEnvironment("ASPNETCORE_URLS","http://127.0.0.1:5184")
-    .WithReference(hrDatabase).WithReference(authDatabase).WithReference(redis).WaitFor(redis);
 builder.AddProject("gateway", Path.Combine(source, "Gateway/Yarp.Gateway/Yarp.Gateway.csproj"), launchProfileName:null)
     .WithHttpEndpoint(port:5181,targetPort:5181,isProxied:false).WithEnvironment("ASPNETCORE_URLS","http://127.0.0.1:5181")
-    .WaitFor(hr).WaitFor(organization).WaitFor(workflow);
+    .WaitFor(hr).WaitFor(organization);
 await builder.Build().RunAsync();

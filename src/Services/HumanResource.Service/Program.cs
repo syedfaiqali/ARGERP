@@ -1,8 +1,9 @@
+using HumanResource.Service.Approvals;
 using ARGERP.Runtime;
 using EDXS.Shared.Common;
-using EDXS.Shared.Finance;
-using EDXS.Shared.Finance.Commands;
-using EDXS.Shared.Finance.Contracts;
+using HumanResource.Service.PayrollAccounting;
+using HumanResource.Service.PayrollAccounting.Commands;
+using HumanResource.Service.PayrollAccounting.Contracts;
 using HumanResource.Service.Infrastructure.Data;
 using HumanResource.Service.Posting;
 using HumanResource.Service.Services;
@@ -46,16 +47,18 @@ builder.Services.AddScoped<IJvBacklogProvider, PayrollJvBacklogProvider>();
 builder.Services.Configure<ZkAttendanceSyncOptions>(builder.Configuration.GetSection("ZkAttendance"));
 builder.Services.AddScoped<IZkAttendanceSyncService, ZkAttendanceSyncService>();
 builder.Services.AddHostedService<HumanResource.Service.Workers.ZkAttendanceSyncWorker>();
-builder.Services.AddScoped<IVacancyNumberService, VacancyNumberService>();
+
 builder.Services.AddScoped<IVacancyFulfillmentService, VacancyFulfillmentService>();
 
 builder.Services.AddScoped<Auth.Service.Services.HrAttritionDashboardService>();
 builder.Services.AddHttpClient("googleoauth", client => client.Timeout = TimeSpan.FromSeconds(30));
 builder.Services.AddScoped<GoogleOAuthService>();
+builder.AddHrApprovals();
 var app = builder.Build();
 EDXS.Shared.Workflow.WorkflowIntegration.UseWorkflowErrors(app);
 app.UseArgRuntime();
 EDXS.Shared.Workflow.WorkflowIntegration.MapWorkflowAdapter(app);
 app.UseScopeHeaderNormalization();
 if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
+app.MapHrApprovals();
 app.Run();

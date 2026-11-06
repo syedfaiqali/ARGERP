@@ -1,8 +1,9 @@
 $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+& (Join-Path $PSScriptRoot 'assert-scope.ps1')
 $localRoot = Join-Path $projectRoot '.local'
 $runningBackend = @(Get-CimInstance Win32_Process | Where-Object {
-    $_.ExecutablePath -like "$projectRoot\*" -and $_.Name -in @('AppHost.exe', 'HumanResource.Service.exe', 'Organization.Service.exe', 'Workflow.Service.exe', 'Yarp.Gateway.exe')
+    $_.ExecutablePath -like "$projectRoot\*" -and $_.Name -in @('AppHost.exe', 'HumanResource.Service.exe', 'Organization.Service.exe', 'Yarp.Gateway.exe')
 })
 if ($runningBackend.Count -gt 0) { throw 'ARG backend is already running. Stop its Visual Studio debugging session or run scripts/stop.ps1 -BackendOnly before starting another instance.' }
 if (-not (Test-Path -LiteralPath (Join-Path $localRoot 'settings.json'))) { & (Join-Path $PSScriptRoot 'setup.ps1') }

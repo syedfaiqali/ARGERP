@@ -48,7 +48,7 @@ import {
 } from "@/hooks/useHiddenMenuPermissions";
 import { EmployeeAdditionalInfoPage } from "./EmployeeAdditionalInfoPage";
 import { EmployeePayrollTab } from "./components/EmployeePayrollTab";
-import { getOnlineMeetingSetup } from "@/services/communication/onlineMeetingSetupService";
+import { getOnlineMeetingSetup } from "@/services/hrMeetingService";
 
 interface EmployeeProfileProps {
   onSubViewChange?: (subView: string | null) => void;
@@ -168,7 +168,7 @@ const EmployeeProfile: React.FC<EmployeeProfileProps> = ({
         return;
       }
 
-      const response: any = await PostService("/api/communication/OnlineMeetingSetup/v3/zoom/test-connection", {
+      const response: any = await PostService("/api/HumanResource/Settings/v3/online-meeting/zoom/test-connection", {
         zoomAccountId: formData.zoomAccountId?.trim() || "",
         zoomClientSecret: formData.zoomClientSecret?.trim() || "",
         zoomHostEmail: formData.zoomHostEmail?.trim() || "",
@@ -888,7 +888,7 @@ const EmployeeProfile: React.FC<EmployeeProfileProps> = ({
     }
 
     let cancelled = false;
-    void GetService(`/api/Academics/Subjects/v3?pageNumber=1&pageSize=1000&lightweight=true&entityId=${entityId}`)
+    void GetService(`/api/HumanResource/TeachingReferences/Subjects/v3?pageNumber=1&pageSize=1000&lightweight=true&entityId=${entityId}`)
       .then((response: any) => {
         if (cancelled) return;
         const payload = response?.data ?? {};
@@ -930,7 +930,7 @@ const EmployeeProfile: React.FC<EmployeeProfileProps> = ({
     }
 
     let cancelled = false;
-    void GetService(`/api/Academics/Courses/v3?pageNumber=1&pageSize=1000&entityId=${entityId}`)
+    void GetService(`/api/HumanResource/TeachingReferences/Courses/v3?pageNumber=1&pageSize=1000&entityId=${entityId}`)
       .then((response: any) => {
         if (cancelled) return;
         const payload = response?.data ?? {};
@@ -956,7 +956,7 @@ const EmployeeProfile: React.FC<EmployeeProfileProps> = ({
 
   const fetchGeneralPolicy = useCallback(async () => {
     try {
-      const response: any = await GetService("/api/Administration/SystemPolicyGeneral/v3");
+      const response: any = await GetService("/api/HumanResource/Settings/v3");
       const data = response?.data?.data ?? response?.data?.Data ?? response?.data ?? response ?? {};
       setAllowIntegrationTabs(Boolean(data.allowIntegration ?? data.AllowIntegration ?? false));
     } catch (error) {

@@ -1,4 +1,3 @@
-import { syncRegionalLocations } from "@/services/regionalService";
 import React, { useEffect, useState, useMemo} from "react";
 import { Grid, Box, Typography, Collapse, Button } from "@mui/material";
 import { ArrowBack as ArrowBackIcon, Save as SaveIcon } from "@mui/icons-material";
@@ -152,7 +151,7 @@ const City: React.FC<CityProps> = ({ onSubViewChange, resetKey }) => {
   useEffect(() => {
     if (!["new", "edit"].includes(viewMode) || !formData.countryid) return;
     let active = true;
-    void syncRegionalLocations(formData.countryid).then(() => GetService("/api/organization/State/v3?PageNumber=1&PageSize=5000&countryId=" + formData.countryid))
+    void Promise.resolve().then(() => GetService("/api/organization/State/v3?PageNumber=1&PageSize=5000&countryId=" + formData.countryid))
       .then(response => { if (active) { const body = response?.data ?? response; setGlobalStates(body?.items ?? body?.Items ?? body?.data ?? body?.Data ?? []); } })
       .catch(() => { if (active) { setToasterMessages([translate("Could not load states from provider")]); setToasterSeverity("error"); setShowToaster(true); } });
     return () => { active = false; };

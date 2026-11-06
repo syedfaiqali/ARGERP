@@ -331,12 +331,7 @@ export const payrollRegisterSlice = createCrudSlice<any>({
 
 /* --------------------------------------------------------------- Loan Setup */
 
-export const loanTypeSlice = createCrudSlice<any>({
-  name: 'hrLoanType',
-  url: '/api/HumanResource/LoanType/v3?pageSize=1000',
-  getId: byId,
-  normalize: identity,
-});
+
 
 /**
  * Fetches one HR record by id, for the screens whose edit/view mode loads the full

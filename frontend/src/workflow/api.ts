@@ -4,7 +4,7 @@ import type { AxiosResponse } from 'axios'
 import toast from 'react-hot-toast'
 import { randomUUId } from '@/utils/uuid'
 
-export const workflowBase = '/api/Workflow/v3'
+export const workflowBase = '/api/HumanResource/Workflow/v3'
 export const workflowEnabled = import.meta.env.VITE_WORKFLOW_ENABLED === 'true'
 export type Selector = { kind: 'Group' | 'Role' | 'User'; id: string }
 export type RelatedUser = 'Parent' | 'ReportTo' | 'Teacher'

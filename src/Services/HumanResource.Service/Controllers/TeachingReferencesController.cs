@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 namespace HumanResource.Service.Controllers;
 // Local teaching-reference lookups used by employee specialization, independent of Academics services.
-[ApiController, Authorize, Route("api/Academics")]
+[ApiController, Authorize, Route("api/TeachingReferences")]
 public sealed class TeachingReferencesController(HumanResourceDbContext db) : ControllerBase
 {
     public sealed record Option(int Id,string? Name,string? CourseName);

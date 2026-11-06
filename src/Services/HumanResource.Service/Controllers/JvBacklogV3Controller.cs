@@ -1,4 +1,4 @@
-using EDXS.Shared.Finance.Api;
+using HumanResource.Service.PayrollAccounting.Api;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

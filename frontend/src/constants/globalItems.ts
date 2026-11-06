@@ -25,7 +25,7 @@ export interface Campus {
     imageUrl?: string;
 }
 
-const toImageUrl = (imageId: number) => imageId > 0 ? `/api/Student/v3/image/${imageId}` : "";
+const toImageUrl = (imageId: number) => imageId > 0 ? `/api/HumanResource/v3/image/${imageId}` : "";
 
 export const mapInstitutionToCampus = (item: any): Campus => {
     const imageId = Number(item?.imageId ?? item?.ImageId ?? item?.imageid ?? item?.ImageID ?? 0);
@@ -93,7 +93,7 @@ const shouldUseCampusAsEntityScope = (method?: string) => {
 
 // Chart of Accounts is client-wide; it must not inherit the selected entity.
 const shouldExcludeEntityScope = (method?: string) =>
-    (method || '').toLowerCase().includes('/api/financialmanagement/chartofaccount/v3');
+    (method || '').toLowerCase().includes('/api/organization/Department/v3/ficoa-lookup');
 
 const getScopeHeaders = (method?: string) => {
     const headers: Record<string, string> = {};

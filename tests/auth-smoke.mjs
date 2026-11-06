@@ -1,6 +1,6 @@
 import fs from 'node:fs';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';
 const config=JSON.parse(fs.readFileSync(new URL('../.local/settings.json',import.meta.url),'utf8').replace(/^\uFEFF/,''));
-const base='http://127.0.0.1:5181',username='smoke-auth-'+randomUUID(),password='Arg!'+randomUUID(),nextPassword='Next!'+randomUUID();let userId;
+const base=(process.env.ARG_API_BASE || 'http://127.0.0.1:5181'),username='smoke-auth-'+randomUUID(),password='Arg!'+randomUUID(),nextPassword='Next!'+randomUUID();let userId;
 async function call(path,method='GET',body,token){const r=await fetch(base+path,{method,headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},body:body?JSON.stringify(body):undefined});const text=await r.text();return{status:r.status,data:text?JSON.parse(text):null};}
 const admin=await call('/api/auth/login','POST',{username:'admin',password:config.adminPassword});assert.equal(admin.status,200);const token=admin.data.accessToken;
 try{
@@ -16,7 +16,7 @@ try{
  const resumed=await call('/api/auth/login','POST',{username,password});assert.equal(resumed.status,200);
  assert.equal((await call('/api/auth/change-password','POST',{currentPassword:password,newPassword:nextPassword},resumed.data.accessToken)).status,204);
  assert.equal((await call('/api/HumanResource/EmployeeProfile/v3','GET',undefined,resumed.data.accessToken)).status,401,'Password change must revoke sessions across services');
- assert.equal((await call('/api/Workflow/v3/me','GET',undefined,resumed.data.accessToken)).status,401,'Password change must revoke workflow sessions too');
+ assert.equal((await call('/api/HumanResource/Workflow/v3/me','GET',undefined,resumed.data.accessToken)).status,401,'Password change must revoke workflow sessions too');
  assert.equal((await call('/api/auth/login','POST',{username,password})).status,401);
  assert.equal((await call('/api/auth/login','POST',{username,password:nextPassword})).status,200);
  console.log('PASS Auth: user creation/update, login, account blocking, password change and cross-service session revocation.');

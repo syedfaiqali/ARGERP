@@ -41,7 +41,7 @@ async function get<T>(path: string, signal: AbortSignal): Promise<T> {
   }
 }
 export async function getHrDashboard(filters: HrFilters, signal: AbortSignal) {
-  const data = await get<HrDashboardResponse>(`/api/auth/HR/v3/attrition?${queryFor(filters)}`, signal)
+  const data = await get<HrDashboardResponse>(`/api/HumanResource/Dashboard/v3/attrition?${queryFor(filters)}`, signal)
   if (!data?.summary || !Array.isArray(data.entities) || !Array.isArray(data.summary.months)) throw new Error('Invalid HR dashboard response.')
   return data
 }
@@ -52,7 +52,7 @@ export async function getHrDetails(filters: HrFilters, kind: HrDetailKind, pageN
   query.set('pageSize', String(pageSize))
   const activeFilters = Object.fromEntries(Object.entries(columnFilters).filter(([, value]) => value.trim()))
   if (Object.keys(activeFilters).length) query.set('filters', JSON.stringify(activeFilters))
-  const data = await get<HrDetailResponse>(`/api/auth/HR/v3/attrition/details?${query}`, signal)
+  const data = await get<HrDetailResponse>(`/api/HumanResource/Dashboard/v3/attrition/details?${query}`, signal)
   if (!Array.isArray(data?.rows) || typeof data.totalCount !== 'number') throw new Error('Invalid HR detail response.')
   return data
 }

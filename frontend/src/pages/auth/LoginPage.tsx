@@ -20,10 +20,10 @@ import {
   Lock as LockIcon,
   KeyboardArrowRight as ArrowIcon,
   ArrowBack as BackIcon,
-  AutoStories as BookIcon,
-  School as SchoolIcon,
+  Badge as BookIcon,
+  EventAvailable as SchoolIcon,
   Computer as ComputerIcon,
-  Science as ScienceIcon,
+  AccessTime as ScienceIcon,
   LightbulbOutlined as IdeaIcon,
   AssignmentOutlined as TaskIcon,
   BusinessCenter as BusinessIcon,
@@ -45,18 +45,18 @@ const schema = yup.object({ username:yup.string().required('Username is required
 interface LoginFormData { username:string;password:string }
 const slogans = [
   {
-    title: "Learning Meets Operations.",
-    sub: "Run campuses, training centers, and corporate teams through one secure ERP workspace.",
+    title: "Your People. One Workspace.",
+    sub: "Manage employee records, attendance, leave and payroll in one secure HR workspace.",
     accent: "var(--lms-primary)",
   },
   {
-    title: "One Platform. Every Workflow.",
-    sub: "Unify LMS, ERP, operations, communication, analytics, and team management across education and corporate environments.",
+    title: "Attendance to Payroll. Connected.",
+    sub: "Track attendance, manage shifts and process payroll with your team's information in one place.",
     accent: "#34d399",
   },
   {
-    title: "Built for Every Team.",
-    sub: "A unified digital ecosystem for educators, learners, managers, and administrators.",
+    title: "Leave Requests. Clear Approvals.",
+    sub: "Keep leave requests and approvals organized, with clear employee records and HR reports.",
     accent: "#60a5fa",
   },
 ];
@@ -68,9 +68,7 @@ type LoginBrand = {
 };
 
 /**
- * The ARG portal is served from its dedicated IIS binding.  Branding is
- * resolved from the public request address so it is available before a user
- * has authenticated; all other addresses retain the EDXS identity.
+ * The standalone HR portal uses Al Rahim branding on every host.
  */
 const getLoginBrand = (): LoginBrand => ({ name: "Al Rahim Group", logo: argLogoImage, isArg: true });
 
@@ -245,7 +243,7 @@ const Logo = ({ brand }: { brand: LoginBrand }) => (
         opacity: 0.7,
       }}
     >
-      <T>{brand.isArg ? "Al Rahim Group Portal" : "Education & Enterprise Suite"}</T>
+      <T>Al Rahim Group HR Portal</T>
     </Typography>
   </motion.div>
 );
@@ -354,7 +352,7 @@ return (<Box sx={{
             <Stack direction="row" spacing={5}>
               <Box>
                 <Typography variant="h4" sx={{ fontWeight: 800, color: "var(--lms-primary)" }}>
-                  10k+
+                  <T>People</T>
                 </Typography>
                 <Typography variant="caption" sx={{
         opacity: 0.5,
@@ -362,17 +360,18 @@ return (<Box sx={{
         fontWeight: 700,
         letterSpacing: "0.05em",
     }}>
-                  <T>Active Users</T>
+                  <T>Employee Records</T>
                 </Typography>
               </Box>
               <Box sx={{
-        width: 1,
+        width: "1px",
+        flexShrink: 0,
         height: 40,
         bgcolor: "rgba(255,255,255,0.1)",
     }}/>
               <Box>
                 <Typography variant="h4" sx={{ fontWeight: 800, color: "var(--lms-primary)" }}>
-                  99%
+                  <T>Payroll</T>
                 </Typography>
                 <Typography variant="caption" sx={{
         opacity: 0.5,
@@ -380,7 +379,7 @@ return (<Box sx={{
         fontWeight: 700,
         letterSpacing: "0.05em",
     }}>
-                  <T>Success Rate</T>
+                  <T>Salary Processing</T>
                 </Typography>
               </Box>
             </Stack>
@@ -389,9 +388,7 @@ return (<Box sx={{
 
         <Box sx={{ position: "absolute", bottom: 50, left: 100, opacity: 0.3 }}>
           <Typography variant="caption" sx={{ fontWeight: 500, letterSpacing: "0.05em" }}>
-            {loginBrand.isArg
-        ? "AL RAHIM GROUP PORTAL"
-        : "EDXS PORTAL | EDUCATION & ENTERPRISE SUITE"}
+            AL RAHIM GROUP | HUMAN RESOURCES
           </Typography>
         </Box>
       </Box>

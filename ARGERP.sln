@@ -8,15 +8,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HumanResource.Service", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Organization.Service", "src\Services\Organization.Service\Organization.Service.csproj", "{13AB6CC8-29BC-4A17-9B0A-FFCBC2AB3A4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow.Service", "src\Services\Workflow.Service\Workflow.Service.csproj", "{9F7B7F6A-D3E9-44B8-952D-D6520135AE36}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARGERP.Runtime", "src\Shared\ARGERP.Runtime\ARGERP.Runtime.csproj", "{9E9A05E3-5241-470C-B879-ACEDA3F88632}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDXS.Shared.Auth", "src\Shared\EDXS.Shared.Auth\EDXS.Shared.Auth.csproj", "{55A3E362-6AFB-4566-BF8F-BF4585C89CB4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDXS.Shared.Common", "src\Shared\EDXS.Shared.Common\EDXS.Shared.Common.csproj", "{573D0534-3A81-43B5-936B-53DF00DE7138}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDXS.Shared.Finance", "src\Shared\EDXS.Shared.Finance\EDXS.Shared.Finance.csproj", "{A223F248-C7A4-4378-84EF-912608D68BA4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDXS.Shared.Infrastructure", "src\Shared\EDXS.Shared.Infrastructure\EDXS.Shared.Infrastructure.csproj", "{D7996430-0446-4BEB-85BB-E96A3106E833}"
 EndProject
@@ -48,10 +44,6 @@ Global
 		{13AB6CC8-29BC-4A17-9B0A-FFCBC2AB3A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13AB6CC8-29BC-4A17-9B0A-FFCBC2AB3A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13AB6CC8-29BC-4A17-9B0A-FFCBC2AB3A4D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9F7B7F6A-D3E9-44B8-952D-D6520135AE36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F7B7F6A-D3E9-44B8-952D-D6520135AE36}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F7B7F6A-D3E9-44B8-952D-D6520135AE36}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F7B7F6A-D3E9-44B8-952D-D6520135AE36}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E9A05E3-5241-470C-B879-ACEDA3F88632}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E9A05E3-5241-470C-B879-ACEDA3F88632}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E9A05E3-5241-470C-B879-ACEDA3F88632}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -64,10 +56,6 @@ Global
 		{573D0534-3A81-43B5-936B-53DF00DE7138}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{573D0534-3A81-43B5-936B-53DF00DE7138}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{573D0534-3A81-43B5-936B-53DF00DE7138}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A223F248-C7A4-4378-84EF-912608D68BA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A223F248-C7A4-4378-84EF-912608D68BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A223F248-C7A4-4378-84EF-912608D68BA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A223F248-C7A4-4378-84EF-912608D68BA4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D7996430-0446-4BEB-85BB-E96A3106E833}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D7996430-0446-4BEB-85BB-E96A3106E833}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7996430-0446-4BEB-85BB-E96A3106E833}.Release|Any CPU.ActiveCfg = Release|Any CPU

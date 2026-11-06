@@ -43,6 +43,32 @@ namespace HumanResource.Service.Controllers
             return Ok(result);
         }
 
+        public sealed record RecalculateRequest(int EmployeeId, DateTime From, DateTime To);
+
+        [HttpPost("recalculate")]
+        public async Task<ActionResult> Recalculate(RecalculateRequest request,
+            [FromServices] HumanResource.Service.Infrastructure.Data.HumanResourceDbContext db,
+            CancellationToken ct)
+        {
+            if (request.EmployeeId <= 0 || request.From == default || request.To < request.From)
+                return BadRequest(new { error = "Employee and a valid date range are required." });
+            var client = GetClientId(); var entity = GetEntityId();
+            var periods = await Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync(
+                db.PayrollPeriodDetails.Where(x => x.Header != null && x.Header.ClientId == client && !x.Header.Utblock && !x.utblock
+                    && (!entity.HasValue || x.Header.EntityId == entity || x.Header.EntityId == null)
+                    && x.Startdate <= request.To && x.Enddate >= request.From).Select(x => x.Id), ct);
+            var updated = 0;
+            foreach (var period in periods)
+            {
+                var rows = await _mediator.Send(new GetEmployeeMonthlyAttendanceProcessV3Query(client, entity, period, null, null, null, request.EmployeeId), ct);
+                var items = rows.Select(x => new EmployeeMonthlyAttendanceUpsertV3Request(x.EmployeeId, x.RegisterId, x.PayPeriodId,
+                    x.PayPeriodDetailId, x.StartDate, x.EndDate, x.DisbDate, x.EntityId, x.Days, x.PresentsCount, x.AbsentsCount,
+                    x.HalfDaysCount, x.LateCount, x.EarlyCounts, x.ActualDays, x.ActualPresent, x.Holidays, x.Leaves)).ToList();
+                if (items.Count > 0) { await _mediator.Send(new SaveEmployeeMonthlyAttendanceV3Command(items, client, entity), ct); updated += items.Count; }
+            }
+            return Ok(new { updated });
+        }
+
         [HttpPost("bulk")]
         public async Task<ActionResult> Save([FromBody] SaveEmployeeMonthlyAttendanceV3Request request)
         {

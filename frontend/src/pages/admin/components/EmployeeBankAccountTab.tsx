@@ -523,9 +523,9 @@ export const EmployeeBankAccountTab: React.FC<EmployeeBankAccountTabProps> = ({
 
     try {
       setLoading(true);
-      await PostService("/api/BankManagement/BankGroup/v3", {
+      await PostService("/api/HumanResource/Reference/v3/banks", {
         code: bankGroupForm.code.trim(),
-        bankGroup: bankGroupForm.bankGroup.trim(),
+        name: bankGroupForm.bankGroup.trim(),
         description: bankGroupForm.description.trim(),
       });
       await loadBankGroups();

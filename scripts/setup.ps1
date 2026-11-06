@@ -1,5 +1,6 @@
 $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+& (Join-Path $PSScriptRoot 'assert-scope.ps1')
 $localRoot = Join-Path $projectRoot '.local'
 New-Item -ItemType Directory -Force $localRoot | Out-Null
 $settingsPath = Join-Path $localRoot 'settings.json'
@@ -21,13 +22,13 @@ foreach ($name in @('workflow', 'humanresource', 'organization', 'auth')) {
     $hash = [Security.Cryptography.SHA256]::Create().ComputeHash([Text.Encoding]::UTF8.GetBytes($settings.signingKey + ':' + $name))
     $workflowKeys[$name] = [Convert]::ToBase64String($hash)
 }
-foreach ($service in @('HumanResource', 'Organization', 'Workflow')) {
+foreach ($service in @('HumanResource', 'Organization')) {
     $config = @{
         ConnectionStrings = @{ OrganizationDB = $settings.connectionString; UserManagementDB = $settings.connectionString }
         JwtSettings = @{ SecretKey = $settings.signingKey; Issuer = 'ARGERP'; Audience = 'ARGERP' }
         Workflow = @{
             Enabled = $true; SingleReplica = $true; ServiceKeys = $workflowKeys
-            Services = @{ auth = 'http://127.0.0.1:5183'; organization = 'http://127.0.0.1:5183'; humanresource = 'http://127.0.0.1:5182'; workflow = 'http://127.0.0.1:5184' }
+            Services = @{ auth = 'http://127.0.0.1:5183'; organization = 'http://127.0.0.1:5183'; humanresource = 'http://127.0.0.1:5182'; workflow = 'http://127.0.0.1:5182' }
         }
         Logging = @{ LogLevel = @{ Default = 'Warning'; 'Microsoft.AspNetCore' = 'Warning' } }
     }

@@ -273,12 +273,7 @@ export const occupationSlice = createCrudSlice<any>({
   normalize: (item) => item,
 });
 
-export const academicRegisterSlice = createCrudSlice<any>({
-  name: 'orgAcademicRegister',
-  url: '/api/organization/AcademicRegister/v3?pageNumber=1&pageSize=1000',
-  getId: (r) => r?.id ?? r?.academicregisterid,
-  normalize: (item) => item,
-});
+
 
 export const institutionSlice = createCrudSlice<any>({
   name: 'orgInstitution',
@@ -286,77 +281,6 @@ export const institutionSlice = createCrudSlice<any>({
   getId: (r) => r?.id ?? r?.institutionid,
   lookups: {
     all: '/api/organization/Institution/v3/lookups',
-  },
-  normalize: (item) => item,
-});
-
-/* ----------------------------------------------------------------- Settings */
-
-/** Returns the lookups payload as-is, for screens that normalize it themselves. */
-const fetchRawLookup = async (url: string) => {
-  const res: any = await GetService(url);
-  const data = res?.data?.data ?? res?.data?.Data ?? res?.data ?? {};
-  // Wrapped in an array so extractItems keeps the object intact as a single entry.
-  return { data: [data] };
-};
-
-/** The Administration lookups endpoints wrap each list under a named key. */
-const fetchKeyedLookup = async (url: string, key: string) => {
-  const res: any = await GetService(url);
-  const data = res?.data?.data ?? res?.data?.Data ?? res?.data ?? {};
-  const capitalized = key.charAt(0).toUpperCase() + key.slice(1);
-  return { data: data[key] ?? data[capitalized] ?? [] };
-};
-
-const fetchTypesLookup = (url: string) => fetchKeyedLookup(url, 'types');
-
-export const policiesSlice = createCrudSlice<any>({
-  name: 'orgPolicies',
-  url: '/api/Administration/Policies/v3',
-  getId: (r) => r?.id ?? r?.policyid,
-  lookups: {
-    activities: () => fetchKeyedLookup('/api/Administration/Policies/v3/lookups', 'activities'),
-  },
-  normalize: (item) => item,
-});
-
-export const reasonTypeSlice = createCrudSlice<any>({
-  name: 'orgReasonType',
-  url: '/api/Administration/ReasonType/v3',
-  getId: (r) => r?.id ?? r?.reasontypeid,
-  lookups: {
-    types: () => fetchTypesLookup('/api/Administration/ReasonType/v3/lookups'),
-  },
-  normalize: (item) => item,
-});
-
-export const reasonSlice = createCrudSlice<any>({
-  name: 'orgReason',
-  url: '/api/Administration/Reason/v3',
-  getId: (r) => r?.id ?? r?.reasonid,
-  lookups: {
-    types: () => fetchTypesLookup('/api/Administration/Reason/v3/lookups'),
-  },
-  normalize: (item) => item,
-});
-
-export const messageTemplateSlice = createCrudSlice<any>({
-  name: 'orgMessageTemplate',
-  url: '/api/Administration/MessageTemplate/v3',
-  getId: (r) => r?.id ?? r?.messagetemplateid,
-  lookups: {
-    // Cached raw; the screen keeps its own normalizers for these two lists.
-    all: () => fetchRawLookup('/api/Administration/MessageTemplate/v3/lookups'),
-  },
-  normalize: (item) => item,
-});
-
-export const unblockActivitiesSlice = createCrudSlice<any>({
-  name: 'orgUnblockActivities',
-  url: '/api/Administration/UnblockActivities/v3',
-  getId: (r) => r?.id,
-  lookups: {
-    students: '/api/Administration/UnblockActivities/v3/students',
   },
   normalize: (item) => item,
 });

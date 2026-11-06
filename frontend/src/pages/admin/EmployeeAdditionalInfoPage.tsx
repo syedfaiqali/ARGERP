@@ -1,3 +1,4 @@
+import {hrReportBlob} from '@/services/hrReportService';
 import Select from "@/components/ClearableSelect";
 import React, { useState, useEffect } from "react";
 import type { ReactElement, ReactNode } from "react";
@@ -336,18 +337,7 @@ export const EmployeeAdditionalInfoPage: React.FC<EmployeeAdditionalInfoPageProp
     setAcrExportError([]);
     try {
       const entityId = Number(localStorage.getItem("selectedCampusId"));
-      const response = await api.get("/api/report/export/EmployeePerformanceEvaluation", {
-        params: {
-          EmployeeId: id,
-          FromDate: `${acrYear}-01-01`,
-          TillDate: `${acrYear}-12-31`,
-          format,
-          ...(Number.isFinite(entityId) && entityId > 0 ? { EntityId: entityId } : {}),
-        },
-        responseType: "blob",
-      });
-
-      const blob = response.data as Blob;
+      const blob = await hrReportBlob('EmployeePerformanceEvaluation', { employeeId:id, fromDate: acrYear + '-01-01', tillDate: acrYear + '-12-31' }, format);
       if (blob?.type?.includes("json")) {
         const payload = JSON.parse(await blob.text());
         throw new Error(payload?.detail || payload?.message || "Failed to export ACR");

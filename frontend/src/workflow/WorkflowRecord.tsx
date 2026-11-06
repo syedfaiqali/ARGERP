@@ -22,7 +22,7 @@ function RevisionLookup({ field, detail, values, onChange }: { field: Field; det
     const timer = window.setTimeout(async () => {
       setLoading(true); setError('')
       try {
-        const endpoint = field.key === 'authorTypeId' ? '/api/Academics/Authors/v3/author-types' : field.key === 'countryId'
+        const endpoint = field.key === 'countryId'
           ? '/api/organization/Country/v3?pageNumber=1&pageSize=1000' : '/api/organization/Department/v3/ficoa-lookup'
         const response = await api.get(endpoint, { signal: abort.signal, params: { searchTerm: search } })
         const rows = Array.isArray(response.data) ? response.data : response.data?.items ?? response.data?.Items ?? []
@@ -148,7 +148,7 @@ export function WorkflowRecordPage() {
     if (!detail) return
     setBusy(true); setError('')
     try {
-      const endpoints: Record<string, string> = { SMAuthor: '/api/Academics/Authors/v3', Department: '/api/organization/Department/v3', Vehicletype: '/api/Transport/VehicleType/v3', EPLoanrequest: '/api/HumanResource/LoanRequest/v3',
+      const endpoints: Record<string, string> = { Department: '/api/organization/Department/v3',
         ERQualification: '/api/HumanResource/Qualification/v3', ERQualificationtype: '/api/HumanResource/QualificationType/v3', ERSkill: '/api/HumanResource/Skill/v3',
         ERSkilltype: '/api/HumanResource/SkillType/v3', ERPositiontype: '/api/HumanResource/PositionType/v3', HRDocType: '/api/HumanResource/HRDocumentType/v3',
         EPEarningtype: '/api/HumanResource/EarningType/v3', EPEarninggrphdr: '/api/HumanResource/EarningGroup/v3', EPDeductiontype: '/api/HumanResource/DeductionType/v3',

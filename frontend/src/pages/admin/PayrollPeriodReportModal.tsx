@@ -114,7 +114,7 @@ export const PayrollPeriodReportModal: React.FC<PayrollPeriodReportModalProps> =
             onClose={onClose}
             title="Payroll Period Report"
             reportName={filters.reportType === 'Summary' ? 'PayrollPeriodSummary' : 'PayrollPeriodDetail'}
-            baseUrl="/api/report/payroll-period"
+            baseUrl="/api/HumanResource/Reports/v3/payroll-period"
             onGenerate={handleGenerate}
             onClear={handleClear}
             isFullScreenView={isFullScreenView}

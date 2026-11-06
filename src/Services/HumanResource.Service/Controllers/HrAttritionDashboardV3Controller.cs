@@ -8,7 +8,7 @@ namespace Auth.Service.API.Controllers;
 
 [ApiController]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("api/auth/HR/v3/attrition")]
+[Route("api/Dashboard/v3/attrition")]
 public sealed class HrAttritionDashboardV3Controller(HrAttritionDashboardService dashboard, ILogger<HrAttritionDashboardV3Controller> logger) : ControllerBase
 {
     [HttpGet]

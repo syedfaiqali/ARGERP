@@ -39,7 +39,7 @@ await using (var master = new SqlConnection(masterBuilder.ConnectionString))
 await using var hr = new HumanResourceDbContext(new DbContextOptionsBuilder<HumanResourceDbContext>().UseSqlServer(connectionString).Options);
 await using var organization = new OrganizationDbContext(new DbContextOptionsBuilder<OrganizationDbContext>().UseSqlServer(connectionString).Options);
 await using var auth = new ArgAuthDbContext(new DbContextOptionsBuilder<ArgAuthDbContext>().UseSqlServer(connectionString).Options);
-await using var workflow = new Workflow.Service.Data.WorkflowDbContext(new DbContextOptionsBuilder<Workflow.Service.Data.WorkflowDbContext>().UseSqlServer(connectionString).Options);
+await using var workflow = new HumanResource.Service.Approvals.Data.WorkflowDbContext(new DbContextOptionsBuilder<HumanResource.Service.Approvals.Data.WorkflowDbContext>().UseSqlServer(connectionString).Options);
 var schemas = new[] { workflow.Database.GenerateCreateScript(), hr.Database.GenerateCreateScript(), organization.Database.GenerateCreateScript(), auth.Database.GenerateCreateScript() };
 await using var connection = new SqlConnection(connectionString);
 await connection.OpenAsync();

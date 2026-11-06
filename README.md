@@ -35,7 +35,7 @@ See [the integration notes](docs/zkt-integration.md). Credentials are stored onl
 | YARP gateway | 5181 |
 | Human Resource | 5182 |
 | Organization / local authentication | 5183 |
-| Workflow | 5184 |
+| HR approvals | Inside Human Resource (5182) |
 | Aspire AppHost dashboard | 18880 |
 
 AppHost starts dedicated `argerp-redis` and `argerp-rabbitmq` Docker containers, waits for them before starting dependent services, and injects their connection strings. Redis is used for workflow replay protection and the SignalR backplane. RabbitMQ is running and referenced by the service configuration; the standalone flows currently use SQL and HTTP and do not publish queue messages. RabbitMQ data uses the `argerp-rabbitmq-data` volume.
@@ -64,3 +64,10 @@ The ZKT integration test creates a temporary, uniquely named local fixture datab
 The login presentation, logo, home portal and menu cards reuse the original project's Al Rahim Group assets and JSX. The navigation shell keeps its sidebar/header dimensions and styling while exposing the three standalone modules. Login branding is always Al Rahim Group, including localhost.
 
 For Visual Studio, select the `AppHost` launch profile and press F5. The checked-in profile supplies the dashboard and telemetry environment variables. Use one backend launcher at a time: before switching from the script to Visual Studio, run `powershell -File scripts/stop.ps1 -BackendOnly`, stop any old debugging session, then rebuild. The stop script detaches only ARG's own brokers from the recorded ARG launch network and removes that network once empty; broker data volumes remain intact.
+
+
+Only HR, Organization and Auth business modules are included. Auth is hosted in Organization.Service. Approval execution and payroll posting run inside HumanResource.Service; there is no standalone Workflow or Finance project. HR supporting lookups, settings, teaching references and reporting read local HR APIs. Gateway exposes only HR, Organization/Auth and local users.
+
+Run `powershell -File scripts/build.ps1` for a guarded build, or add `-ArtifactsPath .local/build` to verify without replacing running outputs. Setup/start/build run `scripts/assert-scope.ps1` to reject excluded services and module API references. Repository instructions are recorded in AGENTS.md.
+
+HR report previews and exports are generated locally from scoped HR API data (PDF and XLSX); no external report server is required. Original report templates and the previous extra export formats are not included.

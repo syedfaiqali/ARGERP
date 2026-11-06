@@ -184,7 +184,7 @@ const UploadAttendance: React.FC = () => {
       const deviceItems = toOptions(payload?.deviceTypes);
       const fileItems = toOptions(payload?.fileTypes);
 
-      setMemberTypes(types);
+      setMemberTypes(types.filter((x:any) => x.id !== MEMBER_TYPE_STUDENT));
       setDevices(deviceItems);
       setFileTypes(fileItems);
 
@@ -218,7 +218,7 @@ const UploadAttendance: React.FC = () => {
 
   const loadStudents = async () => {
     try {
-      const response: any = await GetService("/api/Student/UploadAttendance/v3/students");
+      const response: any = await GetService("/api/HumanResource/UploadAttendance/v3/employees");
       const items = response?.data ?? [];
       setStudents(Array.isArray(items) ? items : []);
     } catch {
@@ -288,7 +288,7 @@ const UploadAttendance: React.FC = () => {
 
       const response: any = await PostService(
         isStudentType
-          ? "/api/Student/UploadAttendance/v3/process"
+          ? "/api/HumanResource/UploadAttendance/v3/process"
           : "/api/HumanResource/UploadAttendance/v3/process",
         payload,
       );

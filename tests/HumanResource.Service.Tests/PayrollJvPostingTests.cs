@@ -1,8 +1,8 @@
-using EDXS.Shared.Finance;
-using EDXS.Shared.Finance.Commands;
-using EDXS.Shared.Finance.Contracts;
-using EDXS.Shared.Finance.Data;
-using EDXS.Shared.Finance.Engine;
+using HumanResource.Service.PayrollAccounting;
+using HumanResource.Service.PayrollAccounting.Commands;
+using HumanResource.Service.PayrollAccounting.Contracts;
+using HumanResource.Service.PayrollAccounting.Data;
+using HumanResource.Service.PayrollAccounting.Engine;
 using FluentAssertions;
 using HumanResource.Service.DTOs;
 using HumanResource.Service.Entities;

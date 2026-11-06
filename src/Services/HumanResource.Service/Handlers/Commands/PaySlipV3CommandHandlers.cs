@@ -1,4 +1,4 @@
-using EDXS.Shared.Finance;
+using HumanResource.Service.PayrollAccounting;
 using EDXS.Shared.Common.Payroll;
 using HumanResource.Service.DTOs;
 using HumanResource.Service.Infrastructure.Data;
