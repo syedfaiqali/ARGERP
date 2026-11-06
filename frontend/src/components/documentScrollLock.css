@@ -1,0 +1,10 @@
+/* Keep custom drawer locks separate from MUI's inline overflow/padding locks.
+   Neither system can capture and later restore the other's locked styles. */
+html.edxs-document-scroll-locked,
+html.edxs-document-scroll-locked body {
+  overflow: hidden !important;
+}
+
+html.edxs-document-scroll-locked body {
+  padding-right: var(--edxs-locked-body-padding-right, 0px);
+}

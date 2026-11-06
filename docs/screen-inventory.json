@@ -1,0 +1,296 @@
+[
+  {
+    "group": "HR Setup",
+    "component": "Qualification",
+    "label": "Qualification",
+    "path": "/hr/qualification"
+  },
+  {
+    "group": "HR Setup",
+    "component": "QualificationType",
+    "label": "Qualification Type",
+    "path": "/hr/qualification-type"
+  },
+  {
+    "group": "HR Setup",
+    "component": "SkillType",
+    "label": "Skill Type",
+    "path": "/hr/skill-type"
+  },
+  {
+    "group": "HR Setup",
+    "component": "Skill",
+    "label": "Skill",
+    "path": "/hr/skill"
+  },
+  {
+    "group": "HR Setup",
+    "component": "PositionType",
+    "label": "Position Type",
+    "path": "/hr/position-type"
+  },
+  {
+    "group": "HR Setup",
+    "component": "RatingModel",
+    "label": "Rating Model",
+    "path": "/hr/rating-model"
+  },
+  {
+    "group": "HR Setup",
+    "component": "DocumentType",
+    "label": "Document Type",
+    "path": "/hr/document-type"
+  },
+  {
+    "group": "HR Setup",
+    "component": "Grade",
+    "label": "Grade",
+    "path": "/hr/grade"
+  },
+  {
+    "group": "HR Setup",
+    "component": "Authority",
+    "label": "Authority",
+    "path": "/hr/authority"
+  },
+  {
+    "group": "Employees",
+    "component": "EmployeeProfile",
+    "label": "Employee Profile",
+    "path": "/hr/employee-profile"
+  },
+  {
+    "group": "Time Management",
+    "component": "HolidayType",
+    "label": "Holiday Type",
+    "path": "/hr/holiday-type"
+  },
+  {
+    "group": "Time Management",
+    "component": "CalendarHoliday",
+    "label": "Calendar Holiday",
+    "path": "/hr/calendar-holiday"
+  },
+  {
+    "group": "Time Management",
+    "component": "AttendancePolicy",
+    "label": "Attendance Policy",
+    "path": "/hr/attendance-policy"
+  },
+  {
+    "group": "Time Management",
+    "component": "Shift",
+    "label": "Shift",
+    "path": "/hr/shift"
+  },
+  {
+    "group": "Time Management",
+    "component": "Schedule",
+    "label": "Schedule",
+    "path": "/hr/schedule"
+  },
+  {
+    "group": "Time Management",
+    "component": "CustomShift",
+    "label": "Custom Shift",
+    "path": "/hr/custom-shift"
+  },
+  {
+    "group": "Time Management",
+    "component": "DeviceType",
+    "label": "Device Type",
+    "path": "/hr/device-type"
+  },
+  {
+    "group": "Time Management",
+    "component": "DeviceRegistration",
+    "label": "Device Registration",
+    "path": "/hr/device-registration"
+  },
+  {
+    "group": "Time Management",
+    "component": "AttendanceActivity",
+    "label": "Attendance Activity",
+    "path": "/hr/attendance-activity"
+  },
+  {
+    "group": "Attendance",
+    "component": "EmployeeDailyAttendance",
+    "label": "Employee Daily Attendance",
+    "path": "/hr/employee-daily-attendance"
+  },
+  {
+    "group": "Attendance",
+    "component": "EmployeeAttendance",
+    "label": "Employee Attendance",
+    "path": "/hr/employee-attendance"
+  },
+  {
+    "group": "Attendance",
+    "component": "EmployeeMonthlyAttendance",
+    "label": "Employee Monthly Attendance",
+    "path": "/hr/employee-monthly-attendance"
+  },
+  {
+    "group": "Attendance",
+    "component": "EmployeeBulkAttendance",
+    "label": "Employee Bulk Attendance",
+    "path": "/hr/employee-bulk-attendance"
+  },
+  {
+    "group": "Attendance",
+    "component": "DownloadAttendance",
+    "label": "Download Attendance",
+    "path": "/hr/download-attendance"
+  },
+  {
+    "group": "Attendance",
+    "component": "UploadAttendance",
+    "label": "Upload Attendance",
+    "path": "/hr/upload-attendance"
+  },
+  {
+    "group": "Leaves",
+    "component": "LeaveAdjustmentPolicy",
+    "label": "Leave Adjustment Policy",
+    "path": "/hr/leave-adjustment-policy"
+  },
+  {
+    "group": "Leaves",
+    "component": "LeaveType",
+    "label": "Leave Type",
+    "path": "/hr/leave-type"
+  },
+  {
+    "group": "Leaves",
+    "component": "LeaveGroup",
+    "label": "Leave Group",
+    "path": "/hr/leave-group"
+  },
+  {
+    "group": "Leaves",
+    "component": "LeaveRequest",
+    "label": "Leave Request",
+    "path": "/hr/leave-request"
+  },
+  {
+    "group": "Leaves",
+    "component": "LeaveTransaction",
+    "label": "Leave Transaction",
+    "path": "/hr/leave-transaction"
+  },
+  {
+    "group": "Payroll",
+    "component": "PayrollRegister",
+    "label": "Payroll Register",
+    "path": "/hr/payroll-register"
+  },
+  {
+    "group": "Payroll",
+    "component": "PayrollPeriod",
+    "label": "Payroll Period",
+    "path": "/hr/payroll-period"
+  },
+  {
+    "group": "Payroll",
+    "component": "EarningType",
+    "label": "Earning Type",
+    "path": "/hr/earning-type"
+  },
+  {
+    "group": "Payroll",
+    "component": "EarningGroup",
+    "label": "Earning Group",
+    "path": "/hr/earning-group"
+  },
+  {
+    "group": "Payroll",
+    "component": "DeductionType",
+    "label": "Deduction Type",
+    "path": "/hr/deduction-type"
+  },
+  {
+    "group": "Payroll",
+    "component": "DeductionGroup",
+    "label": "Deduction Group",
+    "path": "/hr/deduction-group"
+  },
+  {
+    "group": "Payroll",
+    "component": "PaySlip",
+    "label": "Pay Slip",
+    "path": "/hr/pay-slip"
+  },
+  {
+    "group": "Organization",
+    "component": "Department",
+    "label": "Department",
+    "path": "/hr/department"
+  },
+  {
+    "group": "Organization",
+    "component": "Designation",
+    "label": "Designation",
+    "path": "/hr/designation"
+  },
+  {
+    "group": "Organization",
+    "component": "Institution",
+    "label": "Institution",
+    "path": "/hr/institution"
+  },
+  {
+    "group": "Organization",
+    "component": "Site",
+    "label": "Site",
+    "path": "/hr/site"
+  },
+  {
+    "group": "Organization",
+    "component": "Country",
+    "label": "Country",
+    "path": "/hr/country"
+  },
+  {
+    "group": "Organization",
+    "component": "Region",
+    "label": "Region",
+    "path": "/hr/region"
+  },
+  {
+    "group": "Organization",
+    "component": "State",
+    "label": "State",
+    "path": "/hr/state"
+  },
+  {
+    "group": "Organization",
+    "component": "City",
+    "label": "City",
+    "path": "/hr/city"
+  },
+  {
+    "group": "Organization",
+    "component": "Occupation",
+    "label": "Occupation",
+    "path": "/hr/occupation"
+  },
+  {
+    "group": "Organization",
+    "component": "ReferenceData",
+    "label": "Reference Data",
+    "path": "/hr/reference-data"
+  },
+  {
+    "group": "Auth",
+    "component": "UserManagement",
+    "label": "Users",
+    "path": "/auth/users"
+  },
+  {
+    "group": "Auth",
+    "component": "ChangePassword",
+    "label": "Change Password",
+    "path": "/auth/change-password"
+  }
+]

@@ -1,0 +1,12 @@
+**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+**/*.user
+**/*.tsbuildinfo
+.local/
+*.log
+.vs/
+**/appsettings.Local.json
+frontend/.env.local
+artifacts/

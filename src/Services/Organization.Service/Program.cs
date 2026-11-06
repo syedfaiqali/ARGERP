@@ -1,0 +1,26 @@
+using ARGERP.Runtime;
+using ARGERP.Auth;
+using Microsoft.EntityFrameworkCore;
+using Organization.Service.Infrastructure.Data;
+using Organization.Service.Services;
+var builder = WebApplication.CreateBuilder(args);
+builder.AddArgAuthentication();
+builder.Configuration["Workflow:ServiceName"] = "organization";
+EDXS.Shared.Workflow.WorkflowIntegration.AddWorkflowAdapter<Organization.Service.Workflow.DepartmentWorkflowAdapter>(builder.Services);
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+var connection = builder.Configuration.GetConnectionString("OrganizationDB");
+builder.Services.AddDbContext<OrganizationDbContext>(options => options.UseSqlServer(connection, sql => sql.TranslateParameterizedCollectionsToConstants()));
+builder.Services.AddDbContextFactory<OrganizationDbContext>(options => options.UseSqlServer(connection, sql => sql.TranslateParameterizedCollectionsToConstants()), lifetime: ServiceLifetime.Scoped);
+builder.Services.AddDbContext<AuthorizationScopeDbContext>(options => options.UseSqlServer(connection));
+builder.Services.AddDbContext<ArgAuthDbContext>(options => options.UseSqlServer(connection));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddScoped<ISchoolSetupV3Service, SchoolSetupV3Service>();
+builder.Services.AddSingleton<IInstitutionTerminologyService, InstitutionTerminologyService>();
+var app = builder.Build();
+EDXS.Shared.Workflow.WorkflowIntegration.UseWorkflowErrors(app);
+app.UseArgRuntime();
+EDXS.Shared.Workflow.WorkflowIntegration.MapWorkflowAdapter(app);
+if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
+app.Run();

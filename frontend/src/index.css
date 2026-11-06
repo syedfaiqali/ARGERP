@@ -1,0 +1,98 @@
+﻿:root {
+  /* Color Palette */
+  --lms-primary: rgb(111 148 68);
+  --lms-primary-rgb: 111, 148, 68;
+  --lms-primary-dark-rgb: 83, 95, 32;
+  --lms-primary-dark: #535F20;
+  --lms-primary-soft: rgba(111, 148, 68, 0.12);
+  --lms-bg: #FFFFFF;
+  --lms-text-main: #1F2937;
+  --lms-text-secondary: #6B7280;
+  --lms-border: #F3F4F6;
+  --lms-sidebar-bg: linear-gradient(135deg, rgba(111, 148, 68, 0.08), rgba(83, 95, 32, 0.12));
+
+  /* Typography */
+  --font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+}
+
+body {
+  background-color: var(--lms-bg);
+  color: var(--lms-text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Languages with long compound words (German "Gebührenverwaltung", Russian
+   "Администрирование") must not push labels out of buttons, menus, table cells or
+   the sidebar. Hyphenation uses the html lang the translation provider sets, and
+   break-word only splits a word that would otherwise overflow its box. Scoped to
+   these languages so the existing ones render exactly as before. */
+html:is(:lang(de), :lang(ru), :lang(fr), :lang(es), :lang(it), :lang(pl), :lang(nl), :lang(tr), :lang(pt), :lang(id), :lang(bn)) body {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Korean breaks between words, not between syllables, like English. */
+html:lang(ko) body {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+a {
+  font-weight: 500;
+  color: var(--lms-primary);
+  text-decoration: inherit;
+  transition: all 0.2s;
+}
+
+a:hover {
+  color: var(--lms-primary-dark);
+}
+
+button {
+  border-radius: 8px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--lms-primary-soft);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--lms-primary);
+}
+
+/* Sidebar Specific Scrollbar */
+.MuiDrawer-paper ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.MuiDrawer-paper ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--lms-primary-soft) transparent;
+}
