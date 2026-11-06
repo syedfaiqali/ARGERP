@@ -50,16 +50,10 @@ The AppHost dashboard is configured for anonymous local development access. Thes
 dotnet build ARGERP.sln
 dotnet test tests/HumanResource.Service.Tests
 npm --prefix frontend run build
-node tests/screen-render.cjs
 dotnet run --project tools/DatabaseSetup -- --test-zkt
-# With the local app running:
-node tests/api-smoke.mjs
-node tests/crud-smoke.mjs
-node tests/auth-smoke.mjs
-node tests/hr-flows.mjs
 ```
 
-The ZKT integration test creates a temporary, uniquely named local fixture database, checks history/idempotency/source isolation and removes its fixtures. It does not contact the real ZKT server. Screen rendering is a server-render check; interactive browser/visual verification is a separate check.
+The ZKT integration test creates a temporary, uniquely named local fixture database, checks history/idempotency/source isolation and removes its fixtures. It does not contact the real ZKT server. Temporary JavaScript verification runners and generated verification reports were removed after validation.
 
 The login presentation, logo, home portal and menu cards reuse the original project's Al Rahim Group assets and JSX. The navigation shell keeps its sidebar/header dimensions and styling while exposing the three standalone modules. Login branding is always Al Rahim Group, including localhost.
 
@@ -71,3 +65,5 @@ Only HR, Organization and Auth business modules are included. Auth is hosted in 
 Run `powershell -File scripts/build.ps1` for a guarded build, or add `-ArtifactsPath .local/build` to verify without replacing running outputs. Setup/start/build run `scripts/assert-scope.ps1` to reject excluded services and module API references. Repository instructions are recorded in AGENTS.md.
 
 HR report previews and exports are generated locally from scoped HR API data (PDF and XLSX); no external report server is required. Original report templates and the previous extra export formats are not included.
+
+Launcher runtime logs are stored in the OS temporary directory under ARG ERP's ARGERP/logs folder, outside the project.

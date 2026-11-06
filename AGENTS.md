@@ -8,3 +8,5 @@
 - Loan, Vacancy and Organogram screens remain excluded.
 - Preserve the current Al Rahim UI and existing ZKT source integration; never alter the source system's attendance sync flags.
 - Do not run a background ARG backend while Visual Studio is debugging/building it. Use isolated build artifacts for verification when output files may be locked.
+- Keep the project free of temporary CJS/MJS verification runners, root build logs and generated test reports. Do not leave one-off cleanup or migration helper scripts in the workspace after use. Preserve required local settings and ZKT credentials.
+- Send launcher runtime logs to the OS temporary directory (`ARGERP/logs`), outside the project.
